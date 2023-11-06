@@ -1,2 +1,2 @@
 # Fieldz
-Sports Bookings App
+Sports Booking App
