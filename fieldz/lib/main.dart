@@ -1,3 +1,4 @@
+import 'package:fieldz/login.dart';
 import 'package:fieldz/views/coaches_screen.dart';
 import 'package:fieldz/views/fields_screen.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +15,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: 'Fieldz',
-      home: FieldsScreen(),
+      home: Login(),
     );
   }
 }
