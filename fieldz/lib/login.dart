@@ -130,10 +130,12 @@ class _LoginState extends State<Login> {
               onPressed: () async{
                 // Get.to(() => AdminLandingPage());
                 try {
+                  print('123');
                   final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
                     email: _emailController.text,
                     password: _passwordController.text,
                   );
+                  print('here');
                   if(credential.user!.emailVerified){
                     Get.to(() => LandingPage());
                     print('email is  validated');

@@ -54,7 +54,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyDS3qmVYKfesyAH4t1z1X5Sy0LIizH_moo',
-    appId: '1:539813466063:android:d4d54998bc7352411e4cba',
+    appId: '1:539813466063:android:de26105563f16c471e4cba',
     messagingSenderId: '539813466063',
     projectId: 'my-grad-project-45ddc',
     storageBucket: 'my-grad-project-45ddc.appspot.com',
@@ -62,19 +62,19 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyAzIBcfzIgjEupnp9xpLNEiapucWu__zm0',
-    appId: '1:539813466063:ios:2efe08d5027c1d3f1e4cba',
+    appId: '1:539813466063:ios:48e7d89ad86795fc1e4cba',
     messagingSenderId: '539813466063',
     projectId: 'my-grad-project-45ddc',
     storageBucket: 'my-grad-project-45ddc.appspot.com',
-    iosBundleId: 'com.example.coachGrad',
+    iosBundleId: 'com.example.fieldz',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
     apiKey: 'AIzaSyAzIBcfzIgjEupnp9xpLNEiapucWu__zm0',
-    appId: '1:539813466063:ios:2e8db6be65f6a97f1e4cba',
+    appId: '1:539813466063:ios:ad18a21116def4b61e4cba',
     messagingSenderId: '539813466063',
     projectId: 'my-grad-project-45ddc',
     storageBucket: 'my-grad-project-45ddc.appspot.com',
-    iosBundleId: 'com.example.coachGrad.RunnerTests',
+    iosBundleId: 'com.example.fieldz.RunnerTests',
   );
 }
