@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'CoachProfilePage.dart';
+import 'admin_coach_details_page.dart';
 
 class CoachesListPage extends StatelessWidget {
   final List<Map<String, dynamic>> coaches = [

@@ -1,6 +1,6 @@
+import 'package:fieldz/views/admin_coaches_page.dart';
+import 'package:fieldz/views/admin_fields_page.dart';
 import 'package:flutter/material.dart';
-import 'CoachesListPage.dart';
-import 'FieldListPage.dart';
 
 class AdminLandingPage extends StatelessWidget {
   @override

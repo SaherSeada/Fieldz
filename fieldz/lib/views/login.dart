@@ -1,7 +1,10 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
-import 'package:fieldz/LandingPage.dart';
-import 'package:fieldz/coach_landingpage.dart';
-import 'package:fieldz/signup.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fieldz/views/admin_landing_page.dart';
+import 'package:fieldz/views/coach_landingpage.dart';
+import 'package:fieldz/views/signup.dart';
+import 'package:fieldz/views/supplier_dashboard.dart';
+import 'package:fieldz/views/user_fields_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -28,12 +31,13 @@ class _LoginState extends State<Login> {
               children: [
                 Center(
                   child: Container(
-                    // margin: EdgeInsets.all(5),
+                      // margin: EdgeInsets.all(5),
                       height: 150,
                       width: 200,
                       decoration: BoxDecoration(color: Colors.white),
                       child: CircleAvatar(
-                        backgroundImage: AssetImage("assets/coach.png"), // Add your profile image
+                        backgroundImage: AssetImage(
+                            "assets/coach.png"), // Add your profile image
                       )),
                 ),
                 Text(
@@ -62,7 +66,7 @@ class _LoginState extends State<Login> {
                   decoration: InputDecoration(
                       hintText: "Enter Your Email",
                       contentPadding:
-                      EdgeInsets.symmetric(vertical: 2, horizontal: 20),
+                          EdgeInsets.symmetric(vertical: 2, horizontal: 20),
                       filled: true,
                       fillColor: Colors.grey[200],
                       border: OutlineInputBorder(
@@ -84,11 +88,11 @@ class _LoginState extends State<Login> {
                 ),
                 TextFormField(
                   controller: _passwordController,
-                  obscureText:true,
+                  obscureText: true,
                   decoration: InputDecoration(
                       hintText: "Enter Your Password",
                       contentPadding:
-                      EdgeInsets.symmetric(vertical: 2, horizontal: 20),
+                          EdgeInsets.symmetric(vertical: 2, horizontal: 20),
                       filled: true,
                       fillColor: Colors.grey[200],
                       border: OutlineInputBorder(
@@ -102,8 +106,9 @@ class _LoginState extends State<Login> {
                   height: 15,
                 ),
                 InkWell(
-                  onTap: ()async{
-                    await FirebaseAuth.instance.sendPasswordResetEmail(email: _emailController.text);
+                  onTap: () async {
+                    await FirebaseAuth.instance
+                        .sendPasswordResetEmail(email: _emailController.text);
                   },
                   child: Container(
                     alignment: Alignment.topRight,
@@ -127,39 +132,54 @@ class _LoginState extends State<Login> {
                   borderRadius: BorderRadius.circular(20)),
               color: Colors.amber,
               textColor: Colors.white,
-              onPressed: () async{
-                // Get.to(() => AdminLandingPage());
+              onPressed: () async {
                 try {
-                  print('123');
-                  final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+                  final credential =
+                      await FirebaseAuth.instance.signInWithEmailAndPassword(
                     email: _emailController.text,
                     password: _passwordController.text,
                   );
-                  print('here');
-                  if(credential.user!.emailVerified){
-                    Get.to(() => LandingPage());
-                    print('email is  validated');
-                  } else{
+                  if (credential.user!.emailVerified) {
+                    Map userData = {};
+                    await FirebaseFirestore.instance
+                        .collection('users')
+                        .doc(credential.user?.uid)
+                        .get()
+                        .then((DocumentSnapshot doc) {
+                      userData = doc.data() as Map<String, dynamic>;
+                    });
+                    switch (userData['user_type']) {
+                      case 'user':
+                        Get.to(() => FieldsScreen());
+                        break;
+                      case 'admin':
+                        Get.to(() => AdminLandingPage());
+                        break;
+                      case 'supplier':
+                        Get.to(() => Dashboard());
+                        break;
+                      case 'coach':
+                        Get.to(() => LandingPage());
+                      default:
+                        break;
+                    }
+                  } else {
                     AwesomeDialog(
                       context: context,
                       dialogType: DialogType.error,
                       animType: AnimType.bottomSlide,
                       title: 'verification',
-                      desc:
-                      'verify your email account',
+                      desc: 'verify your email account',
                     )..show();
                   }
                 } on FirebaseAuthException catch (e) {
-                  print('here');
-                  print(e);
+                  // print(e);
                   if (e.code == 'user-not-found') {
-                    print('No user found for that email.');
+                    // print('No user found for that email.');
                   } else if (e.code == 'wrong-password') {
-                    print('Wrong password provided for that user.');
-
+                    // print('Wrong password provided for that user.');
                   }
                 }
-
               },
               child: Text("Login"),
             ),
@@ -167,7 +187,7 @@ class _LoginState extends State<Login> {
               height: 20,
             ),
             InkWell(
-              onTap: (){
+              onTap: () {
                 Get.to(() => SignUp());
               },
               child: Center(
@@ -176,11 +196,7 @@ class _LoginState extends State<Login> {
                     text: "Don't Have An Account ?",
                   ),
                   TextSpan(
-                      text: " Register",
-                      style:TextStyle(
-                          color: Colors.amber
-                      )
-                  )
+                      text: " Register", style: TextStyle(color: Colors.amber))
                 ])),
               ),
             )

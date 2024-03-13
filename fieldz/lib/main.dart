@@ -1,6 +1,6 @@
-import 'package:fieldz/login.dart';
-import 'package:fieldz/views/coaches_screen.dart';
-import 'package:fieldz/views/fields_screen.dart';
+import 'package:fieldz/views/login.dart';
+import 'package:fieldz/views/user_coaches_screen.dart';
+import 'package:fieldz/views/user_fields_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:firebase_core/firebase_core.dart';

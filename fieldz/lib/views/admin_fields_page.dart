@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'FieldProfilePage.dart';
+import 'admin_field_details_page.dart';
 
 class FieldListPage extends StatelessWidget {
   final List<Map<String, dynamic>> fields = [
