@@ -1,13 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
-import 'package:fieldz/views/admin_landing_page.dart';
-import 'package:fieldz/views/coach_landingpage.dart';
-import 'package:fieldz/views/signup.dart';
-import 'package:fieldz/views/user_fields_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:fieldz/theme/theme_constants.dart';
+import 'package:fieldz/views/signup.dart';
+import 'package:fieldz/views/supplier_dashboard_view.dart';
+import 'package:fieldz/views/user_fields_screen.dart';
 
 class SupplierLogin extends StatefulWidget {
   const SupplierLogin({Key? key});
@@ -33,24 +32,14 @@ class _SupplierLoginState extends State<SupplierLogin> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Center(
-                    child: Container(
-                      height: 150,
-                      width: 200,
-                      decoration: BoxDecoration(color: Colors.white),
-                      child: CircleAvatar(
-                        backgroundImage: AssetImage("assets/coach.png"),
-                      ),
-                    ),
-                  ),
                   Text(
-                    "Login",
+                    "Supplier Login",
                     style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                   ),
                   SizedBox(height: 2.0),
                   Text(
                     "Login with email",
-                    style: TextStyle(color: COLOR_ACCENT), // Apply accent color
+                    style: TextStyle(color: COLOR_ACCENT),
                   ),
                   SizedBox(height: 10),
                   Text(
@@ -104,17 +93,19 @@ class _SupplierLoginState extends State<SupplierLogin> {
                   SizedBox(height: 15),
                   InkWell(
                     onTap: () async {
-                      await FirebaseAuth.instance
-                          .sendPasswordResetEmail(email: _emailController.text);
+                      await FirebaseAuth.instance.sendPasswordResetEmail(
+                        email: _emailController.text,
+                      );
                     },
                     child: Container(
                       alignment: Alignment.topRight,
                       child: Text(
                         "Forgot Password ?",
                         style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                            color: COLOR_ACCENT), // Apply accent color
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                          color: COLOR_ACCENT,
+                        ),
                       ),
                     ),
                   ),
@@ -123,8 +114,9 @@ class _SupplierLoginState extends State<SupplierLogin> {
               ),
               MaterialButton(
                 shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20)),
-                color: COLOR_ACCENT, // Apply accent color
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                color: COLOR_ACCENT,
                 textColor: Colors.white,
                 onPressed: () async {
                   try {
@@ -147,13 +139,13 @@ class _SupplierLoginState extends State<SupplierLogin> {
                           Get.to(() => FieldsScreen());
                           break;
                         case 'admin':
-                          Get.to(() => AdminLandingPage());
+                          // Navigate to Admin Dashboard
                           break;
                         case 'supplier':
-                          // Redirect to Supplier Dashboard or Supplier Home page
+                          Get.to(() => SupplierDashboardView());
                           break;
                         case 'coach':
-                          Get.to(() => LandingPage());
+                          // Navigate to Coach Dashboard
                           break;
                         default:
                           break;
@@ -188,9 +180,11 @@ class _SupplierLoginState extends State<SupplierLogin> {
                       children: [
                         TextSpan(text: "Don't Have An Account ?"),
                         TextSpan(
-                            text: " Register",
-                            style: TextStyle(
-                                color: COLOR_ACCENT)), // Apply accent color
+                          text: " Register",
+                          style: TextStyle(
+                            color: COLOR_ACCENT,
+                          ),
+                        ),
                       ],
                     ),
                   ),
