@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class PendingCourts extends StatelessWidget {
+class SupplierPendingCourtsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

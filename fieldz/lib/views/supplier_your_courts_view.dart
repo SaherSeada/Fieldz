@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 
-class YourCourts extends StatelessWidget {
+class YourCourtsView extends StatelessWidget {
+  final Function() onAddCourtPressed;
+
+  YourCourtsView({required this.onAddCourtPressed});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -11,9 +15,7 @@ class YourCourts extends StatelessWidget {
         child: Text('Your Courts Page'),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.pushNamed(context, '/addCourt');
-        },
+        onPressed: onAddCourtPressed,
         child: Icon(Icons.add),
       ),
     );

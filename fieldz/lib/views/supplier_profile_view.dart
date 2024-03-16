@@ -1,6 +1,7 @@
+// supplier_profile_view.dart
 import 'package:flutter/material.dart';
 
-class Profile extends StatelessWidget {
+class SupplierProfileView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
