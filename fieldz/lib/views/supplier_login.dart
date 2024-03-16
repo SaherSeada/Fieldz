@@ -3,21 +3,20 @@ import 'package:flutter/material.dart';
 import 'package:fieldz/views/admin_landing_page.dart';
 import 'package:fieldz/views/coach_landingpage.dart';
 import 'package:fieldz/views/signup.dart';
-import 'package:fieldz/views/supplier_login.dart';
 import 'package:fieldz/views/user_fields_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:fieldz/theme/theme_constants.dart';
 
-class Login extends StatefulWidget {
-  const Login({Key? key});
+class SupplierLogin extends StatefulWidget {
+  const SupplierLogin({Key? key});
 
   @override
-  State<Login> createState() => _LoginState();
+  State<SupplierLogin> createState() => _SupplierLoginState();
 }
 
-class _LoginState extends State<Login> {
+class _SupplierLoginState extends State<SupplierLogin> {
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
 
@@ -151,7 +150,7 @@ class _LoginState extends State<Login> {
                           Get.to(() => AdminLandingPage());
                           break;
                         case 'supplier':
-                          Get.to(() => SupplierLogin());
+                          // Redirect to Supplier Dashboard or Supplier Home page
                           break;
                         case 'coach':
                           Get.to(() => LandingPage());
@@ -198,26 +197,6 @@ class _LoginState extends State<Login> {
                 ),
               ),
               SizedBox(height: 10),
-              InkWell(
-                onTap: () {
-                  Get.to(() => SupplierLogin());
-                },
-                child: Center(
-                  child: Text.rich(
-                    TextSpan(
-                      children: [
-                        TextSpan(text: "If you're a supplier press"),
-                        TextSpan(
-                          text: " here",
-                          style: TextStyle(
-                            color: COLOR_ACCENT,
-                          ),
-                        ), // Apply accent color
-                      ],
-                    ),
-                  ),
-                ),
-              ),
             ],
           ),
         ),
