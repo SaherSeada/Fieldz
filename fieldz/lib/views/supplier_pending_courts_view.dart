@@ -1,22 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:fieldz/theme/theme_constants.dart'; // Import theme constants
 
 class SupplierPendingCourtsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Pending Courts'),
+    return Theme(
+      // Apply theme here
+      data: ThemeData(
+        brightness: Brightness.light, // Default to light theme
+        primaryColor: COLOR_PRIMARY,
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              'Pending Courts Page',
-              style: TextStyle(fontSize: 20),
-            ),
-            // Add any other widgets or functionalities as needed
-          ],
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('Pending Courts'),
+        ),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'Pending Courts Page',
+                style: TextStyle(fontSize: 20),
+              ),
+              // Add any other widgets or functionalities as needed
+            ],
+          ),
         ),
       ),
     );

@@ -1,131 +1,154 @@
-import 'package:flutter/material.dart' as supplier_add_court_view;
+import 'package:flutter/material.dart';
 import 'package:fieldz/models/supplier_court_model.dart';
 import 'package:fieldz/controllers/supplier_add_court_controller.dart';
+import 'package:fieldz/theme/theme_constants.dart'; // Import theme constants
 
-class AddCourtView extends supplier_add_court_view.StatefulWidget {
+class AddCourtView extends StatefulWidget {
   @override
   _AddCourtViewState createState() => _AddCourtViewState();
 }
 
-class _AddCourtViewState extends supplier_add_court_view.State<AddCourtView> {
-  final supplier_add_court_view.TextEditingController courtNameController =
-      supplier_add_court_view.TextEditingController();
+class _AddCourtViewState extends State<AddCourtView> {
+  final TextEditingController courtNameController = TextEditingController();
   String selectedSport = 'Football'; // Initial value
-  final supplier_add_court_view.TextEditingController locationController =
-      supplier_add_court_view.TextEditingController();
-  final supplier_add_court_view.TextEditingController googleMapsLinkController =
-      supplier_add_court_view.TextEditingController();
-  final supplier_add_court_view.TextEditingController minCapacityController =
-      supplier_add_court_view.TextEditingController();
-  final supplier_add_court_view.TextEditingController numCourtsController =
-      supplier_add_court_view.TextEditingController();
-  final supplier_add_court_view.TextEditingController feesPerHourController =
-      supplier_add_court_view.TextEditingController();
+  final TextEditingController locationController = TextEditingController();
+  final TextEditingController googleMapsLinkController =
+      TextEditingController();
+  final TextEditingController minCapacityController = TextEditingController();
+  final TextEditingController numCourtsController = TextEditingController();
+  final TextEditingController feesPerHourController = TextEditingController();
 
   @override
-  supplier_add_court_view.Widget build(
-      supplier_add_court_view.BuildContext context) {
-    return supplier_add_court_view.Scaffold(
-      appBar: supplier_add_court_view.AppBar(
-        title: supplier_add_court_view.Text('Add Court'),
+  Widget build(BuildContext context) {
+    return Theme(
+      // Apply theme here
+      data: ThemeData(
+        brightness: Brightness.light, // Default to light theme
+        primaryColor: COLOR_PRIMARY,
+        hintColor: COLOR_ACCENT,
+        floatingActionButtonTheme:
+            FloatingActionButtonThemeData(backgroundColor: COLOR_ACCENT),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ButtonStyle(
+            padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                EdgeInsets.symmetric(horizontal: 40.0, vertical: 20.0)),
+            shape: MaterialStateProperty.all<OutlinedBorder>(
+                RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20.0))),
+            backgroundColor: MaterialStateProperty.all<Color>(COLOR_ACCENT),
+          ),
+        ),
+        inputDecorationTheme: InputDecorationTheme(
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(20.0),
+            borderSide: BorderSide.none,
+          ),
+          filled: true,
+          fillColor: Colors.grey.withOpacity(0.1),
+        ),
       ),
-      body: supplier_add_court_view.SingleChildScrollView(
-        child: supplier_add_court_view.Padding(
-          padding: supplier_add_court_view.EdgeInsets.all(20.0),
-          child: supplier_add_court_view.Column(
-            children: [
-              supplier_add_court_view.TextField(
-                controller: courtNameController,
-                decoration: supplier_add_court_view.InputDecoration(
-                  labelText: 'Court Name',
-                ),
-              ),
-              supplier_add_court_view.SizedBox(height: 20),
-              supplier_add_court_view.DropdownButtonFormField<String>(
-                value: selectedSport,
-                items: [
-                  supplier_add_court_view.DropdownMenuItem(
-                    value: 'Football',
-                    child: supplier_add_court_view.Text('Football'),
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('Add Court'),
+        ),
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.all(20.0),
+            child: Column(
+              children: [
+                TextField(
+                  controller: courtNameController,
+                  decoration: InputDecoration(
+                    labelText: 'Court Name',
                   ),
-                  supplier_add_court_view.DropdownMenuItem(
-                    value: 'Basketball',
-                    child: supplier_add_court_view.Text('Basketball'),
+                ),
+                SizedBox(height: 20),
+                DropdownButtonFormField<String>(
+                  value: selectedSport,
+                  items: [
+                    DropdownMenuItem(
+                      value: 'Football',
+                      child: Text('Football'),
+                    ),
+                    DropdownMenuItem(
+                      value: 'Basketball',
+                      child: Text('Basketball'),
+                    ),
+                    DropdownMenuItem(
+                      value: 'Padel',
+                      child: Text('Padel'),
+                    ),
+                    DropdownMenuItem(
+                      value: 'Tennis',
+                      child: Text('Tennis'),
+                    ),
+                  ],
+                  onChanged: (value) {
+                    setState(() {
+                      selectedSport = value!;
+                    });
+                  },
+                ),
+                SizedBox(height: 20),
+                TextField(
+                  controller: locationController,
+                  decoration: InputDecoration(
+                    labelText: 'Location',
                   ),
-                  supplier_add_court_view.DropdownMenuItem(
-                    value: 'Padel',
-                    child: supplier_add_court_view.Text('Padel'),
+                ),
+                SizedBox(height: 20),
+                TextField(
+                  controller: googleMapsLinkController,
+                  decoration: InputDecoration(
+                    labelText: 'Google Maps Link',
                   ),
-                  supplier_add_court_view.DropdownMenuItem(
-                    value: 'Tennis',
-                    child: supplier_add_court_view.Text('Tennis'),
+                ),
+                SizedBox(height: 20),
+                TextField(
+                  controller: minCapacityController,
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(
+                    labelText: 'Minimum Capacity',
                   ),
-                  // Add more sports as needed
-                ],
-                onChanged: (value) {
-                  setState(() {
-                    selectedSport = value!;
-                  });
-                },
-              ),
-              supplier_add_court_view.SizedBox(height: 20),
-              supplier_add_court_view.TextField(
-                controller: locationController,
-                decoration: supplier_add_court_view.InputDecoration(
-                  labelText: 'Location',
                 ),
-              ),
-              supplier_add_court_view.SizedBox(height: 20),
-              supplier_add_court_view.TextField(
-                controller: googleMapsLinkController,
-                decoration: supplier_add_court_view.InputDecoration(
-                  labelText: 'Google Maps Link',
+                SizedBox(height: 20),
+                TextField(
+                  controller: numCourtsController,
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(
+                    labelText: 'Number of Courts to Add',
+                  ),
                 ),
-              ),
-              supplier_add_court_view.SizedBox(height: 20),
-              supplier_add_court_view.TextField(
-                controller: minCapacityController,
-                keyboardType: supplier_add_court_view.TextInputType.number,
-                decoration: supplier_add_court_view.InputDecoration(
-                  labelText: 'Minimum Capacity',
+                SizedBox(height: 20),
+                TextField(
+                  controller: feesPerHourController,
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(
+                    labelText: 'Fees per Hour',
+                  ),
                 ),
-              ),
-              supplier_add_court_view.SizedBox(height: 20),
-              supplier_add_court_view.TextField(
-                controller: numCourtsController,
-                keyboardType: supplier_add_court_view.TextInputType.number,
-                decoration: supplier_add_court_view.InputDecoration(
-                  labelText: 'Number of Courts to Add',
+                SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () {
+                    // Create a court object from the entered data
+                    Court court = Court(
+                      courtName: courtNameController.text,
+                      selectedSport: selectedSport,
+                      location: locationController.text,
+                      googleMapsLink: googleMapsLinkController.text,
+                      minCapacity:
+                          int.tryParse(minCapacityController.text) ?? 0,
+                      numCourts: int.tryParse(numCourtsController.text) ?? 0,
+                      feesPerHour:
+                          double.tryParse(feesPerHourController.text) ?? 0.0,
+                    );
+                    // Call the controller to handle form submission
+                    AddCourtController().submitForm(court);
+                  },
+                  child: Text('Submit'),
                 ),
-              ),
-              supplier_add_court_view.SizedBox(height: 20),
-              supplier_add_court_view.TextField(
-                controller: feesPerHourController,
-                keyboardType: supplier_add_court_view.TextInputType.number,
-                decoration: supplier_add_court_view.InputDecoration(
-                  labelText: 'Fees per Hour',
-                ),
-              ),
-              supplier_add_court_view.SizedBox(height: 20),
-              supplier_add_court_view.ElevatedButton(
-                onPressed: () {
-                  // Create a court object from the entered data
-                  Court court = Court(
-                    courtName: courtNameController.text,
-                    selectedSport: selectedSport,
-                    location: locationController.text,
-                    googleMapsLink: googleMapsLinkController.text,
-                    minCapacity: int.tryParse(minCapacityController.text) ?? 0,
-                    numCourts: int.tryParse(numCourtsController.text) ?? 0,
-                    feesPerHour:
-                        double.tryParse(feesPerHourController.text) ?? 0.0,
-                  );
-                  // Call the controller to handle form submission
-                  AddCourtController().submitForm(court);
-                },
-                child: supplier_add_court_view.Text('Submit'),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
