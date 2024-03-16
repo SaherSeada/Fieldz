@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fieldz/views/admin_landing_page.dart';
 import 'package:fieldz/views/coach_landingpage.dart';
 import 'package:fieldz/views/signup.dart';
-import 'package:fieldz/views/supplier_dashboard.dart';
+import 'package:fieldz/views/supplier_dashboard_view.dart';
 import 'package:fieldz/views/user_fields_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -156,7 +156,7 @@ class _LoginState extends State<Login> {
                         Get.to(() => AdminLandingPage());
                         break;
                       case 'supplier':
-                        Get.to(() => Dashboard());
+                        Get.to(() => SupplierDashboardView());
                         break;
                       case 'coach':
                         Get.to(() => LandingPage());

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart' as supplier_add_court_view;
-import 'package:your_app_name/supplier_court_model.dart';
-import 'package:your_app_name/supplier_add_court_controller.dart';
+import 'package:fieldz/models/supplier_court_model.dart';
+import 'package:fieldz/controllers/supplier_add_court_controller.dart';
 
 class AddCourtView extends supplier_add_court_view.StatefulWidget {
   @override

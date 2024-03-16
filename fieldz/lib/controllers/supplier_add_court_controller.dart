@@ -1,4 +1,4 @@
-import 'package:your_app_name/supplier_court_model.dart';
+import 'package:fieldz/models/supplier_court_model.dart';
 
 class AddCourtController {
   void submitForm(Court court) {
