@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import 'Coach_Programs.dart';
+
 
 
 class LandingPage extends StatefulWidget {
@@ -151,6 +153,10 @@ class _LandingPageState extends State<LandingPage> {
               DestinationCard(
                 text: '  Programs  ',
                 onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => Coach_Programs()),
+                  );
                 },
               ),
               SizedBox(width: 16.0),
