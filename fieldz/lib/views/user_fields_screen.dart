@@ -15,8 +15,10 @@ class FieldsScreen extends StatelessWidget {
                 style: TextStyle(
                     color: Colors.white, fontWeight: FontWeight.bold)),
             centerTitle: true,
-            backgroundColor: Colors.blueAccent),
-        body: Column(
+            toolbarHeight: 60,
+            backgroundColor: Colors.blueAccent,
+            automaticallyImplyLeading: false),
+        body: Obx(() => controller.isLoaded.value ? RefreshIndicator(onRefresh: () async {await controller.getFields();}, child: Column(
           children: [
             Container(
               height: 55.0,
@@ -54,7 +56,7 @@ class FieldsScreen extends StatelessWidget {
               ),
             ),
             Expanded(
-              child: ListView.builder(
+              child: Obx(() => ListView.builder(
                 itemCount: controller.fields.length,
                 itemBuilder: (context, index) {
                   return SizedBox(
@@ -125,9 +127,9 @@ class FieldsScreen extends StatelessWidget {
                                                     children:
                                                         List.generate(5, (i) {
                                                       if (i <
-                                                          int.parse(controller
+                                                          controller
                                                               .fields[index]
-                                                              .rating)) {
+                                                              .rating) {
                                                         return const Icon(
                                                             Icons.star,
                                                             size: 16,
@@ -154,7 +156,7 @@ class FieldsScreen extends StatelessWidget {
                                                   minimumSize:
                                                       MaterialStateProperty.all<
                                                               Size>(
-                                                          const Size(25, 25))),
+                                                          const Size(40, 35))),
                                               child: const Text("Book",
                                                   style: TextStyle(
                                                       fontSize: 12,
@@ -165,8 +167,8 @@ class FieldsScreen extends StatelessWidget {
                           )));
                 },
               ),
-            )
+            ))
           ],
-        ));
+        )) : const Center(child: CircularProgressIndicator())));
   }
 }

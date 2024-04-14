@@ -1,11 +1,14 @@
+import 'package:fieldz/controllers/main_controller.dart';
+import 'package:fieldz/views/admin_landing_page.dart';
+import 'package:fieldz/views/coach_landingpage.dart';
 import 'package:fieldz/views/login.dart';
-import 'package:fieldz/views/user_coaches_screen.dart';
-import 'package:fieldz/views/user_fields_screen.dart';
+import 'package:fieldz/views/supplier_login.dart';
+import 'package:fieldz/views/user_landing_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fieldz/theme/theme_constants.dart';
 import 'package:fieldz/theme/theme_manager.dart';
 
@@ -14,12 +17,14 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 ThemeManager _themeManager = ThemeManager();
 
 class MyApp extends StatefulWidget {
+  const MyApp({super.key});
+
   // This widget is the root of your application.
   @override
   _MyAppState createState() => _MyAppState();
@@ -51,7 +56,37 @@ class _MyAppState extends State<MyApp> {
       theme: lightTheme,
       darkTheme: darkTheme,
       themeMode: _themeManager.themeMode,
-      home: Login(),
+      home: MainPage(),
     );
+  }
+}
+
+class MainPage extends StatelessWidget {
+  MainPage({super.key});
+
+  final MainController mainController = Get.put(MainController());
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(() {
+      if (mainController.user.value == null) {
+        // User is not signed in, navigate to login page
+        return const Login();
+      } else {
+        // User is signed in, navigate to home page
+        switch (mainController.userType.value) {
+          case 'user':
+            return UserLandingPage();
+          case 'admin':
+            return AdminLandingPage();
+          case 'supplier':
+            return const SupplierLogin();
+          case 'coach':
+            return const LandingPage();
+          default:
+            return const Login();
+        }
+      }
+    });
   }
 }

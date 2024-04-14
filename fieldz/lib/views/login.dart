@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fieldz/views/user_landing_page.dart';
 import 'package:flutter/material.dart';
 import 'package:fieldz/views/admin_landing_page.dart';
 import 'package:fieldz/views/coach_landingpage.dart';
@@ -18,8 +19,8 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -28,21 +29,21 @@ class _LoginState extends State<Login> {
       data: lightTheme,
       child: Scaffold(
         body: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             image: DecorationImage(
               image: AssetImage("images/background.png"),
               fit: BoxFit.cover,
             ),
           ),
           child: Padding(
-            padding: EdgeInsets.all(15),
+            padding: const EdgeInsets.all(15),
             child: ListView(
               children: [
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(height: 100), // Adjust spacing from top
-                    Text(
+                    const SizedBox(height: 100), // Adjust spacing from top
+                    const Text(
                       "Login",
                       style: TextStyle(
                         fontSize: 30,
@@ -50,65 +51,65 @@ class _LoginState extends State<Login> {
                         color: Colors.white,
                       ),
                     ),
-                    SizedBox(height: 2.0),
-                    Text(
+                    const SizedBox(height: 2.0),
+                    const Text(
                       "Login with email",
                       style: TextStyle(
                           color: COLOR_ACCENT,
-                          fontSize: 15), // Apply accent color
+                          fontSize: 16), // Apply accent color
                     ),
-                    SizedBox(height: 10),
-                    Text(
+                    const SizedBox(height: 15),
+                    const Text(
                       "Email",
                       style:
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                     ),
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
                     TextFormField(
                       controller: _emailController,
                       decoration: InputDecoration(
                         hintText: "Enter Your Email",
-                        contentPadding:
-                            EdgeInsets.symmetric(vertical: 2, horizontal: 20),
+                        contentPadding: const EdgeInsets.symmetric(
+                            vertical: 2, horizontal: 20),
                         filled: true,
                         fillColor: Colors.grey[200],
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(50),
-                          borderSide: BorderSide(color: Colors.grey),
+                          borderSide: const BorderSide(color: Colors.grey),
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(50),
-                          borderSide: BorderSide(color: Colors.grey),
+                          borderSide: const BorderSide(color: Colors.grey),
                         ),
                       ),
                     ),
-                    SizedBox(height: 8),
-                    Text(
+                    const SizedBox(height: 12),
+                    const Text(
                       "Password",
                       style:
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                     ),
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
                     TextFormField(
                       controller: _passwordController,
                       obscureText: true,
                       decoration: InputDecoration(
                         hintText: "Enter Your Password",
-                        contentPadding:
-                            EdgeInsets.symmetric(vertical: 2, horizontal: 20),
+                        contentPadding: const EdgeInsets.symmetric(
+                            vertical: 2, horizontal: 20),
                         filled: true,
                         fillColor: Colors.grey[200],
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(50),
-                          borderSide: BorderSide(color: Colors.grey),
+                          borderSide: const BorderSide(color: Colors.grey),
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(50),
-                          borderSide: BorderSide(color: Colors.grey),
+                          borderSide: const BorderSide(color: Colors.grey),
                         ),
                       ),
                     ),
-                    SizedBox(height: 15),
+                    const SizedBox(height: 15),
                     InkWell(
                       onTap: () async {
                         await FirebaseAuth.instance.sendPasswordResetEmail(
@@ -116,8 +117,8 @@ class _LoginState extends State<Login> {
                       },
                       child: Container(
                         alignment: Alignment.topRight,
-                        child: Text(
-                          "Forgot Password ?",
+                        child: const Text(
+                          "Forgot Password?",
                           style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.bold,
@@ -125,7 +126,7 @@ class _LoginState extends State<Login> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 15),
+                    const SizedBox(height: 15),
                   ],
                 ),
                 MaterialButton(
@@ -151,16 +152,16 @@ class _LoginState extends State<Login> {
                         });
                         switch (userData['user_type']) {
                           case 'user':
-                            Get.to(() => FieldsScreen());
+                            Get.to(() => UserLandingPage());
                             break;
                           case 'admin':
                             Get.to(() => AdminLandingPage());
                             break;
                           case 'supplier':
-                            Get.to(() => SupplierLogin());
+                            Get.to(() => const SupplierLogin());
                             break;
                           case 'coach':
-                            Get.to(() => LandingPage());
+                            Get.to(() => const LandingPage());
                             break;
                           default:
                             break;
@@ -182,42 +183,48 @@ class _LoginState extends State<Login> {
                       }
                     }
                   },
-                  child: Text("Login"),
+                  child: const Text("Login"),
                 ),
                 Container(height: 20),
                 InkWell(
                   onTap: () {
-                    Get.to(() => SignUp());
+                    Get.to(() => const SignUp());
                   },
-                  child: Center(
+                  child: const Center(
                     child: Text.rich(
                       TextSpan(
                         children: [
-                          TextSpan(text: "Don't Have An Account ?"),
                           TextSpan(
-                              text: " Register",
+                              text: "Don't Have An Account?",
+                              style: TextStyle(fontWeight: FontWeight.bold)),
+                          TextSpan(
+                              text: "  Register",
                               style: TextStyle(
-                                  color: COLOR_ACCENT)), // Apply accent color
+                                  color: COLOR_ACCENT,
+                                  fontWeight:
+                                      FontWeight.bold)), // Apply accent color
                         ],
                       ),
                     ),
                   ),
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 InkWell(
                   onTap: () {
-                    Get.to(() => SupplierLogin());
+                    Get.to(() => const SupplierLogin());
                   },
-                  child: Center(
+                  child: const Center(
                     child: Text.rich(
                       TextSpan(
                         children: [
-                          TextSpan(text: "If you're a supplier press"),
+                          TextSpan(
+                              text: "If you're a supplier press",
+                              style: TextStyle(fontWeight: FontWeight.bold)),
                           TextSpan(
                             text: " here",
                             style: TextStyle(
-                              color: COLOR_ACCENT,
-                            ),
+                                color: COLOR_ACCENT,
+                                fontWeight: FontWeight.bold),
                           ), // Apply accent color
                         ],
                       ),
