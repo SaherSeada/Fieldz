@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:fieldz/theme/theme_constants.dart'; // Import theme constants
 
 class SupplierPendingCourtsView extends StatelessWidget {
+  const SupplierPendingCourtsView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Theme(
