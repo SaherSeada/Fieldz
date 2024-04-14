@@ -1,7 +1,7 @@
 class Coach {
   String name;
-  String price;
-  String rating;
+  double price;
+  int rating;
   String avatarUrl;
 
   Coach(this.name, this.price, this.rating, this.avatarUrl);
