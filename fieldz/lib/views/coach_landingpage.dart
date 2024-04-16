@@ -69,7 +69,7 @@ class _LandingPageState extends State<LandingPage> {
                 width: 60,
                 height:60,
                 child: CircleAvatar(
-                  backgroundImage: AssetImage("assets/Profile.png"), // Add your profile image
+                  backgroundImage: AssetImage("images/Profile.png"), // Add your profile image
                 ),
               ),
               Expanded(child: ListTile(
@@ -127,7 +127,7 @@ class _LandingPageState extends State<LandingPage> {
               width: 200,
               decoration: BoxDecoration(color: Colors.white),
               child: CircleAvatar(
-                backgroundImage: AssetImage("assets/coach.png"), // Add your profile image
+                backgroundImage: AssetImage("images/coach.png"), // Add your profile image
               ),),
           Container(
             padding: EdgeInsets.all(16.0),
