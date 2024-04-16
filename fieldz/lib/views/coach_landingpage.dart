@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import 'Coach_Profile.dart';
 import 'Coach_Programs.dart';
 
 
@@ -55,7 +56,7 @@ class _LandingPageState extends State<LandingPage> {
           IconButton(onPressed: () async{
             await FirebaseAuth.instance.signOut();
             Navigator.of(context).pushNamedAndRemoveUntil("login", (route) => false);
-          }, icon: Icon(Icons.close))
+          }, icon: Icon(Icons.notifications))
         ] ,
         centerTitle: true,
         title: Text(username),
@@ -119,59 +120,40 @@ class _LandingPageState extends State<LandingPage> {
         ),
       ), // Set the app bar to null to remove it
       body: Column(
-        // mainAxisAlignment: MainAxisAlignment.center,
+       // mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          SizedBox(
+            height: 80,
+          ),
           Container(
             // margin: EdgeInsets.all(5),
-              height: 150,
+              height: 120,
               width: 200,
               decoration: BoxDecoration(color: Colors.white),
               child: CircleAvatar(
-                backgroundImage: AssetImage("assets/coach.png"), // Add your profile image
+                backgroundImage: AssetImage("images/coach.png"), // Add your profile image
               ),),
+          SizedBox(
+            height: 30,
+          ),
+          SizedBox(height: 15.0),
+          Text(
+            'select an option',
+            style: TextStyle(fontSize: 30.0, color: Colors.black),
+          ),
+          SizedBox(height: 30.0),
+          // Cards for destination selection
+          NavigationBar(),
+          SizedBox(height: 80.0),
           Container(
             padding: EdgeInsets.all(16.0),
             child: Text(
-              'LEAD WITH INTEGRITY',
+              'In fieldz lead with integrity',
               style: TextStyle(
-                fontSize: 30.0,
-                fontWeight: FontWeight.bold,
-                color: Colors.purple, // Choose your desired color
+                fontSize: 17.0,
+                color: Colors.amber, // Choose your desired color
               ),
             ),
-          ),
-          SizedBox(height: 16.0),
-          Text(
-            'select an option',
-            style: TextStyle(fontSize: 25.0, color: Colors.green),
-          ),
-          SizedBox(height: 16.0),
-          // Cards for destination selection
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              DestinationCard(
-                text: '  Programs  ',
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => Coach_Programs()),
-                  );
-                },
-              ),
-              SizedBox(width: 16.0),
-              DestinationCard(
-                text: '   Athletes   ',
-                onPressed: () {
-                },
-              ),
-            ],
-          ),
-          SizedBox(height: 25.0),
-          DestinationCard(
-            text: '  Mange Profile  ',
-            onPressed: () {
-            },
           ),
         ],
 
@@ -202,6 +184,60 @@ class DestinationCard extends StatelessWidget {
           child: Text(
             text,
             style: TextStyle(fontSize: 18.0),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class NavigationBar extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(35), // Adjust the value as needed
+          color: Colors.blueGrey,
+        ),
+        child: Container(
+          height: 50,
+          width: 380, // Occupy the full width of the screen
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              MaterialButton(onPressed: (){
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Coach_Programs()),
+                );
+              },
+                child: Text("Programs"),
+              ),
+              Container(
+                width: 5,
+                color: Colors.amber,
+              ),
+              MaterialButton(onPressed: (){
+              },
+
+                child: Text("Atheletes"),
+              ),
+              Container(
+                width: 5,
+                color: Colors.amber,
+              ),
+              MaterialButton(onPressed: (){
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Coach_Profile()),
+                );
+              },
+
+                child: Text("My Profile"),
+              ),
+
+            ],
           ),
         ),
       ),

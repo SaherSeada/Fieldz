@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'Coach_Subscription_Plan.dart';
 
@@ -12,6 +13,27 @@ class _Coach_ProgramsState extends State<Coach_Programs> {
   TimeOfDay _timeOfDay = TimeOfDay.now();
   TextEditingController _dateController = TextEditingController();
   TextEditingController _timeController = TextEditingController();
+  TextEditingController _nameController = TextEditingController();
+  TextEditingController _locationController = TextEditingController();
+  TextEditingController _durationController = TextEditingController();
+  TextEditingController _PriceController = TextEditingController();
+
+  CollectionReference Sessions = FirebaseFirestore.instance.collection('Sessions');
+
+  Future<void> addSession() {
+    // Call the user's CollectionReference to add a new user
+    return Sessions
+        .add({
+      "Program_name": _nameController.text,
+      "location": _locationController.text,
+      "duration": _durationController.text,
+      "Price": _PriceController.text,
+      "date": _dateController.text,
+      "time": _timeOfDay.format(context),
+    })
+        .then((value) => print("User Added"))
+        .catchError((error) => print("Failed to add user: $error"));
+  }
 
 
   void _showTimePicker(){
@@ -52,6 +74,7 @@ class _Coach_ProgramsState extends State<Coach_Programs> {
                         ),
                       ),
                       TextField(
+                        controller: _nameController,
                         decoration: InputDecoration(
                             prefixText: "Program Name: ",
                             border: UnderlineInputBorder(
@@ -65,6 +88,7 @@ class _Coach_ProgramsState extends State<Coach_Programs> {
                         height: 15,
                       ),
                       TextField(
+                        controller: _locationController,
                         decoration: InputDecoration(
                             prefixText: "Location: ",
                             border: UnderlineInputBorder(
@@ -78,6 +102,7 @@ class _Coach_ProgramsState extends State<Coach_Programs> {
                         height: 15,
                       ),
                       TextField(
+                        controller: _durationController,
                         decoration: InputDecoration(
                             prefixText: "Session time: ",
                             border: UnderlineInputBorder(
@@ -91,6 +116,7 @@ class _Coach_ProgramsState extends State<Coach_Programs> {
                         height: 15,
                       ),
                       TextField(
+                        controller: _PriceController,
                         decoration: InputDecoration(
                             prefixText: "Total Price : ",
                             border: UnderlineInputBorder(
@@ -135,31 +161,49 @@ class _Coach_ProgramsState extends State<Coach_Programs> {
                           ),
                           SizedBox(width: 10),
                           Expanded(
-                            child:MaterialButton(
-                                color: Colors.grey,
-                                onPressed: _showTimePicker,
-                                child:Padding(
-                                  padding: const EdgeInsets.all(20.0),
-                                  child: Text("Time:"+ _timeOfDay.format(context).toString(),
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 15,
-                                    ),),
-                                )
-
+                            child: TextField(
+                              readOnly: true,
+                              decoration: InputDecoration(
+                                  labelText: "Time:"+ _timeOfDay.format(context).toString(),
+                                  labelStyle: TextStyle(color: Colors.black),
+                                  filled: true,
+                                  fillColor: Colors.grey,
+                                  prefixIcon: Icon(Icons.timer),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.blue),
+                                  )
+                              ),
+                              onTap: _showTimePicker,
 
                             ),
                           ),
                         ],
                       ),
                       SizedBox(height: 15,),
-                      ElevatedButton(onPressed: (){},
-                        child: Text("Add Session",style:TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.blueGrey
+
+                  MaterialButton(onPressed: (){
+                    addSession();
+                    _nameController.clear();
+                    _locationController.clear();
+                    _durationController.clear();
+                    _PriceController.clear();
+                    _dateController.clear();
+                    _timeController.clear();
+                  },
+                          child:Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text("Add Session",style:TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.amber
+                              ),
+                              ),
+                              SizedBox(width: 10,),
+                              Icon(Icons.add),
+                            ],
+                          )
                         ),
-                        ),
-                      ),
+
 
                     ],
                   ),
