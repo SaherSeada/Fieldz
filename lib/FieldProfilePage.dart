@@ -1,64 +1,64 @@
 import 'package:flutter/material.dart';
 
 class FieldProfilePage extends StatelessWidget {
-  // Replace with your actual data model
-  final Map<String, dynamic> fieldData = {
-    'name': 'Manor House School',
-    'ownerEmail': 'example@mail.com',
-    'ownerPhone': '0101234567',
-    'fieldPhone': '0101234567',
-    'status': 'Accepted', // Assuming this is the current status
-    'imageUrl': 'assets/stadium.png', // Make sure this asset is added to pubspec.yaml
-    'rating': 4, // Example rating value
-  };
+  final Map<String, dynamic> fieldData;
+
+  // Constructor
+  FieldProfilePage({required this.fieldData});
 
   @override
   Widget build(BuildContext context) {
+    // Null checks with default values
+    String imageUrl = fieldData['imageUrl'] as String? ?? 'assets/default_image.png';
+    String name = fieldData['name'] as String? ?? 'No name provided';
+    String ownerEmail = fieldData['ownerEmail'] as String? ?? 'No email provided';
+    String ownerPhone = fieldData['ownerPhone'] as String? ?? 'No phone provided';
+    String fieldPhone = fieldData['fieldPhone'] as String? ?? 'No field phone provided';
+    String status = fieldData['status'] as String? ?? 'Accepted'; // Default status
+    int rating = fieldData['rating'] as int? ?? 0;
+
+    // Ensure that status is one of the valid options
+    final List<String> statusOptions = ['Accepted', 'Pending', 'Rejected'];
+    if (!statusOptions.contains(status)) {
+      status = 'Accepted'; // Default to 'Accepted' if currentStatus is unknown
+    }
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        title: Text('Field Name', style: TextStyle(color: Colors.black)),
         backgroundColor: Colors.white,
         elevation: 1,
-        actions: [
-          IconButton(
-            icon: Icon(Icons.edit, color: Colors.black),
-            onPressed: () {
-              // Handle edit action
-            },
-          ),
-        ],
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            SizedBox(height: 8), // Spacing at the top
-            // Field Image
             Image.asset(
-              fieldData['imageUrl'],
-              width: double.infinity,
+              imageUrl,
               height: 200,
+              width: double.infinity,
               fit: BoxFit.cover,
-              errorBuilder: (context, error, stackTrace) {
-                return Center(child: Text('Failed to load image'));
-              },
+              errorBuilder: (context, error, stackTrace) => Container(
+                height: 200,
+                color: Colors.grey[300],
+                child: Icon(Icons.broken_image),
+              ),
             ),
-            // Field Details
             Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: EdgeInsets.all(16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _buildDetailRow('Field Name', fieldData['name']),
-                  _buildDetailRow('Owner Email', fieldData['ownerEmail']),
-                  _buildDetailRow('Owner Phone Number', fieldData['ownerPhone']),
-                  _buildDetailRow('Field Phone Number', fieldData['fieldPhone']),
-                  _buildDropdown(fieldData['status']),
-                  SizedBox(height: 8), // Spacing before rating stars
-                  _buildRating(fieldData['rating']),
+                  _buildTextField(label: 'Field Name', value: name, context: context),
+                  _buildTextField(label: 'Owner Email', value: ownerEmail, context: context),
+                  _buildTextField(label: 'Owner Phone Number', value: ownerPhone, context: context),
+                  _buildTextField(label: 'Field Phone Number', value: fieldPhone, context: context),
+                  SizedBox(height: 20),
+                  _buildStatusDropdown(status, statusOptions, context),
+                  SizedBox(height: 20),
+                  _buildRating(rating),
                 ],
               ),
             ),
@@ -68,45 +68,53 @@ class FieldProfilePage extends StatelessWidget {
     );
   }
 
-  Widget _buildDetailRow(String label, String value) {
+  Widget _buildTextField({required String label, required String value, required BuildContext context}) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4.0),
-      child: Row(
+      padding: EdgeInsets.only(bottom: 8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Expanded(child: Text(label, style: TextStyle(fontWeight: FontWeight.bold))),
-          Expanded(child: Text(value, style: TextStyle(color: Colors.grey[600]))),
+          Text(label, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+          TextField(
+            controller: TextEditingController(text: value),
+            decoration: InputDecoration(hintText: 'e.g. ${label.split(' ').last}', border: UnderlineInputBorder()),
+            style: TextStyle(fontSize: 16),
+          ),
         ],
       ),
     );
   }
 
-  Widget _buildDropdown(String currentStatus) {
-    // Dropdown for status with 'Accepted' as the current value
-    return DropdownButton<String>(
-      value: currentStatus,
-      icon: Icon(Icons.arrow_drop_down),
-      onChanged: (String? newValue) {
-        // Update the state with the new status
-      },
-      items: <String>['Accepted', 'Pending', 'Rejected'].map<DropdownMenuItem<String>>((String value) {
-        return DropdownMenuItem<String>(
-          value: value,
-          child: Text(value),
-        );
-      }).toList(),
+  Widget _buildStatusDropdown(String currentValue, List<String> options, BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Expanded(
+          child: DropdownButton<String>(
+            isExpanded: true,
+            value: currentValue,
+            onChanged: (String? newValue) {
+              // Implement state management logic
+            },
+            items: options.map<DropdownMenuItem<String>>((String value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: Text(value),
+              );
+            }).toList(),
+          ),
+        ),
+        Icon(Icons.sports_soccer), // Replace with your sports icon asset
+      ],
     );
   }
 
   Widget _buildRating(int rating) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: List.generate(5, (index) {
-        return Icon(
-          index < rating ? Icons.star : Icons.star_border,
-          color: index < rating ? Colors.amber : Colors.grey,
-        );
+        return Icon(index < rating ? Icons.star : Icons.star_border, color: index < rating ? Colors.amber : Colors.grey, size: 24);
       }),
     );
   }
 }
-
-void main() => runApp(MaterialApp(home: FieldProfilePage()));

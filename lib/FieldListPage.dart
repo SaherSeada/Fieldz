@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
-import 'FieldProfilePage.dart'; // Ensure this is the correct path to your FieldProfilePage
+import 'FieldProfilePage.dart';
 
 class FieldListPage extends StatelessWidget {
   final List<Map<String, dynamic>> fields = [
     {
       'name': 'Manor House School',
       'location': 'Tagamoa 5, New Cairo',
-      'imageUrl': 'assets/stadium.png', // Make sure this is the correct asset path
-      'rating': 4, // Assuming rating is an integer
-      // ... other details if necessary
+      'imageUrl': 'assets/stadium.png',
+      'rating': 4,
     },
-    // ... other field entries
+    // Add more field maps here
   ];
 
   @override
@@ -20,62 +19,100 @@ class FieldListPage extends StatelessWidget {
         title: TextField(
           decoration: InputDecoration(
             hintText: 'Search...',
-            border: InputBorder.none,
+            prefixIcon: Icon(Icons.search),
+            filled: true,
+            fillColor: Colors.white,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(20),
+              borderSide: BorderSide.none,
+            ),
           ),
         ),
         backgroundColor: Colors.white,
-        iconTheme: IconThemeData(color: Colors.black),
+        elevation: 0,
       ),
       body: ListView.builder(
         itemCount: fields.length,
         itemBuilder: (context, index) {
-          return Card(
-            margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ListTile(
-                  leading: Icon(Icons.access_time_filled, color: Colors.black), // Status icon
-                  title: Text(fields[index]['name'], style: TextStyle(fontWeight: FontWeight.bold)),
-                  subtitle: Text(fields[index]['location']),
-                  trailing: Icon(Icons.chevron_right),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => FieldProfilePage(field: fields[index]),
-                      ),
-                    );
-                  },
+          return GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => FieldProfilePage(fieldData: fields[index]),
                 ),
-                Container(
-                  height: 180, // Fixed height for the image
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage(fields[index]['imageUrl']),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              );
+            },
+            child: Card(
+              margin: EdgeInsets.all(10),
+              elevation: 5,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: Column(
+                children: [
+                  Stack(
+                    alignment: Alignment.bottomLeft,
                     children: [
-                      Row(
-                        children: List.generate(5, (starIndex) {
-                          return Icon(
-                            starIndex < fields[index]['rating'] ? Icons.star : Icons.star_border,
-                            color: starIndex < fields[index]['rating'] ? Colors.amber : Colors.grey,
-                            size: 20,
-                          );
-                        }),
+                      ClipRRect(
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(15),
+                          topRight: Radius.circular(15),
+                        ),
+                        child: Image.asset(
+                          fields[index]['imageUrl'],
+                          height: 150,
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                        ),
                       ),
-                      Image.asset('assets/Football.png', width: 24) // Replace with actual sport icon asset
+                      Padding(
+                        padding: EdgeInsets.all(10),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(Icons.access_time_filled, color: Colors.white),
+                            SizedBox(width: 5),
+                            Text(
+                              'Status',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ],
+                        ),
+                      ),
                     ],
                   ),
-                ),
-              ],
+                  Padding(
+                    padding: EdgeInsets.all(10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          fields[index]['name'],
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                          ),
+                        ),
+                        SizedBox(height: 5),
+                        Text(
+                          fields[index]['location'],
+                          style: TextStyle(fontSize: 16, color: Colors.grey),
+                        ),
+                        SizedBox(height: 10),
+                        Row(
+                          children: List.generate(5, (starIndex) {
+                            return Icon(
+                              starIndex < fields[index]['rating'] ? Icons.star : Icons.star_border,
+                              color: starIndex < fields[index]['rating'] ? Colors.amber : Colors.grey,
+                            );
+                          }),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           );
         },
