@@ -31,7 +31,7 @@ class _SignUpState extends State<SignUp> {
                       width: 200,
                       decoration: BoxDecoration(color: Colors.white),
                       child: CircleAvatar(
-                        backgroundImage: AssetImage("assets/coach.png"), // Add your profile image
+                        backgroundImage: AssetImage("images/coach.png"), // Add your profile image
                       )),
                 ),
                 Text(

@@ -1,4 +1,6 @@
 import 'package:fieldz/controllers/coaches_controller.dart';
+import 'package:fieldz/controllers/user_drawer_controller.dart';
+import 'package:fieldz/views/widgets/user_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -7,17 +9,27 @@ class CoachesScreen extends StatelessWidget {
 
   final CoachesController controller = Get.put(CoachesController());
 
+  final UserDrawerController drawerController = UserDrawerController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        key: drawerController.scaffoldKey,
         appBar: AppBar(
             title: const Text("Coaches",
                 style: TextStyle(
                     color: Colors.white, fontWeight: FontWeight.bold)),
             toolbarHeight: 60,
             centerTitle: true,
+            leading: IconButton(
+              icon: const Icon(Icons.menu),
+              onPressed: () {
+                drawerController.openDrawer(); // This line opens the drawer
+              },
+            ),
             backgroundColor: Colors.blueAccent,
             automaticallyImplyLeading: false),
+        drawer: userDrawer(),
         body: Obx(() => controller.isLoaded.value ? RefreshIndicator(
             onRefresh: () async {
               await controller.getCoaches();
