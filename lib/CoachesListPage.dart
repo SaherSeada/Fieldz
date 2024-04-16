@@ -1,25 +1,25 @@
 import 'package:flutter/material.dart';
-import 'coachprofilepage.dart'; // Make sure this import matches the filename of your CoachProfilePage
+import 'CoachProfilePage.dart'; // Make sure this path is correct.
 
 class CoachesListPage extends StatelessWidget {
   final List<Map<String, dynamic>> coaches = [
     {
-      'name': 'Name',
-      'price': 'Price',
-      'imageUrl': 'assets/coach.png', // replace with your image path
-      'typeOfSession': 'Type of Session',
+      'name': 'John Doe',
+      'price': '\$40/session',
+      'typeOfSession': 'Personal Training',
       'rating': 4,
-      'statusIcon': 'assets/Verify.png', // replace with your image path
-      'sportIcon': 'assets/Padel.png', // replace with your image path
+      'imageUrl': 'assets/Coach.png',
+      'statusIcon': 'assets/Verify.png',
+      'sportIcon': 'assets/Padel.png',
     },
-    // ... other coach maps
+    // ... other coach data
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: Icon(Icons.menu, color: Colors.black), // Adjust as per design
+        leading: Icon(Icons.menu, color: Colors.black),
         title: TextField(
           decoration: InputDecoration(
             hintText: 'Search...',
@@ -35,52 +35,35 @@ class CoachesListPage extends StatelessWidget {
         backgroundColor: Colors.white,
         elevation: 0,
       ),
-      body: ListView.separated(
+      body: ListView.builder(
         itemCount: coaches.length,
-        separatorBuilder: (context, index) => Divider(),
         itemBuilder: (context, index) {
           var coach = coaches[index];
-          return ListTile(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => CoachProfilePage(coach: coach),
-                ),
-              );
-            },
-            leading: CircleAvatar(
-              backgroundImage: AssetImage(coach['imageUrl']),
-            ),
-            title: Text(coach['name']),
-            subtitle: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(coach['price']),
-                Text(coach['typeOfSession']),
-              ],
-            ),
-            trailing: Container(
-              width: 96, // Fixed width for the trailing column
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+          return Card(
+            margin: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+            elevation: 4,
+            child: ListTile(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => CoachProfilePage(coach: coach),
+                  ),
+                );
+              },
+              leading: CircleAvatar(
+                radius: 30,
+                backgroundImage: AssetImage(coach['imageUrl']),
+              ),
+              title: Text(coach['name']),
+              subtitle: Text('${coach['price']} - ${coach['typeOfSession']}'),
+              trailing: Wrap(
+                spacing: 12, // space between two icons
                 children: <Widget>[
-                  Image.asset(
-                    coach['statusIcon'],
-                    width: 24, // Match your design
-                    height: 24, // Match your design
-                  ),
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: List.generate(
-                      5,
-                          (idx) => Icon(
-                        idx < coach['rating'] ? Icons.star : Icons.star_border,
-                        color: idx < coach['rating'] ? Colors.amber : Colors.grey,
-                        size: 20,
-                      ),
-                    ),
-                  ),
+                  Image.asset(coach['statusIcon'], width: 24),
+                  Image.asset(coach['sportIcon'], width: 24), // Sport icon
+                  Icon(Icons.chevron_right), // If needed for navigation arrow
                 ],
               ),
             ),
