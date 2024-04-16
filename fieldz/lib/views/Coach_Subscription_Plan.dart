@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Coach_Plan extends StatefulWidget {
   const Coach_Plan({super.key});
@@ -14,6 +15,22 @@ class _Coach_PlanState extends State<Coach_Plan> {
   DateTime _selectedDay = DateTime.now();
   CalendarFormat _calendarFormat = CalendarFormat.week;
   DateTime _focusedDay = DateTime.now();
+  TextEditingController _nameController = TextEditingController();
+  TextEditingController _locationController = TextEditingController();
+  TextEditingController _durationController = TextEditingController();
+  TextEditingController _priceController = TextEditingController();
+
+  CollectionReference programs =
+  FirebaseFirestore.instance.collection('programs');
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _locationController.dispose();
+    _durationController.dispose();
+    _priceController.dispose();
+    super.dispose();
+  }
 
   void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
     setState(() {
@@ -29,6 +46,7 @@ class _Coach_PlanState extends State<Coach_Plan> {
       initialTime: TimeOfDay.now(),
     );
     if (picked != null) {
+      final DateTime currentTime = DateTime.now();
       final DateTime selectedDateTime = DateTime(
         _selectedDay.year,
         _selectedDay.month,
@@ -36,9 +54,19 @@ class _Coach_PlanState extends State<Coach_Plan> {
         picked.hour,
         picked.minute,
       );
-      _addSelectedDate(selectedDateTime);
+
+      // Check if selected date is greater than or equal to the current date
+      if (selectedDateTime.isAfter(currentTime) || selectedDateTime.isAtSameMomentAs(currentTime)) {
+        _addSelectedDate(selectedDateTime);
+      } else {
+        // Show an error message if the selected date is in the past
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text('Please select a date greater or equal to the current date.'),
+        ));
+      }
     }
   }
+
 
   void _addSelectedDate(DateTime selectedDateTime) {
     if (!selectedDates.contains(selectedDateTime)) {
@@ -54,6 +82,30 @@ class _Coach_PlanState extends State<Coach_Plan> {
     });
   }
 
+  void _saveProgramDetails() {
+    programs
+        .add({
+      "Program_name": _nameController.text,
+      "Location": _locationController.text,
+      "Duration": _durationController.text,
+      "Price": _priceController.text,
+      "Schedule": selectedDates.map((date) => date.toString()).toList(),
+    })
+        .then((value) {
+      // Clear fields after successful save
+      _nameController.clear();
+      _locationController.clear();
+      _durationController.clear();
+      _priceController.clear();
+      // Clear schedule table
+      setState(() {
+        selectedDates.clear();
+      });
+    })
+        .catchError((error) => print("Failed to add program: $error"));
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,14 +114,14 @@ class _Coach_PlanState extends State<Coach_Plan> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Text("make your schedule table",
+              Text(
+                "Make your schedule table",
                 style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.blueGrey
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.blueGrey,
                 ),
               ),
-
               TableCalendar(
                 firstDay: DateTime(2020),
                 lastDay: DateTime(2025),
@@ -122,64 +174,71 @@ class _Coach_PlanState extends State<Coach_Plan> {
                     ),
                   ),
                 ),
-
-              Text("Fill in your Program details here",
+              Text(
+                "Fill in your Program details here",
                 style: TextStyle(
                   fontSize: 20,
                   color: Colors.blueGrey,
                 ),
               ),
               TextField(
+                controller: _nameController,
                 decoration: InputDecoration(
-                    prefixText: "Program Name: ",
-                    border: UnderlineInputBorder(),
-
-                    labelText: "Program Name",
-                    labelStyle: TextStyle(color: Colors.blueGrey)
+                  prefixText: "Program Name: ",
+                  border: UnderlineInputBorder(),
+                  labelText: "Program Name",
+                  labelStyle: TextStyle(color: Colors.blueGrey),
                 ),
               ),
-              SizedBox(
-                height: 15,
-              ),
+              SizedBox(height: 15),
               TextField(
+                controller: _locationController,
                 decoration: InputDecoration(
-                    prefixText: "Location: ",
-                    border: UnderlineInputBorder(),
-
-                    labelText: "Meeting Location",
-                    labelStyle: TextStyle(color: Colors.blueGrey)
+                  prefixText: "Location: ",
+                  border: UnderlineInputBorder(),
+                  labelText: "Meeting Location",
+                  labelStyle: TextStyle(color: Colors.blueGrey),
                 ),
               ),
-              SizedBox(
-                height: 15,
-              ),
+              SizedBox(height: 15),
               TextField(
+                controller: _durationController,
                 decoration: InputDecoration(
-                    prefixText: "Session time: ",
-                    border: UnderlineInputBorder(),
-
-                    labelText: "Duration",
-                    labelStyle: TextStyle(color: Colors.blueGrey)
+                  prefixText: "Session time: ",
+                  border: UnderlineInputBorder(),
+                  labelText: "Duration",
+                  labelStyle: TextStyle(color: Colors.blueGrey),
                 ),
               ),
-              SizedBox(
-                height: 15,
-              ),
+              SizedBox(height: 15),
               TextField(
+                controller: _priceController,
                 decoration: InputDecoration(
-                    prefixText: "Total Price : ",
-                    border: UnderlineInputBorder(),
-
-                    labelText: "Price",
-                    labelStyle: TextStyle(color: Colors.blueGrey)
+                  prefixText: "Total Price : ",
+                  border: UnderlineInputBorder(),
+                  labelText: "Price",
+                  labelStyle: TextStyle(color: Colors.blueGrey),
                 ),
               ),
-              SizedBox(
-                height: 15,
+              SizedBox(height: 15),
+              MaterialButton(
+                onPressed: _saveProgramDetails,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Add Session",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.amber,
+                      ),
+                    ),
+                    SizedBox(width: 10),
+                    Icon(Icons.add),
+                  ],
+                ),
               ),
-              SizedBox(
-                height: 5,
-              ),
+              SizedBox(height: 5),
             ],
           ),
         ),
