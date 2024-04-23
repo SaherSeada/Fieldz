@@ -8,7 +8,7 @@ class CoachesListPage extends StatelessWidget {
       'price': '\$40/session',
       'typeOfSession': 'Personal Training',
       'rating': 4,
-      'imageUrl': 'images/Coach.png',
+      'imageUrl': 'images/coach.png',
       'statusIcon': 'images/Verify.png',
       'sportIcon': 'images/Padel.png',
     },

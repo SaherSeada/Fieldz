@@ -14,7 +14,7 @@ class CoachProfilePage extends StatelessWidget {
     String phone = coach['phone'] ?? '0101234567';
     String status = coach['status'] ?? 'Verified';
     int rating = coach['rating'] ?? 5;
-    String imageUrl = coach['imageUrl'] ?? 'images/Coach.png';
+    String imageUrl = coach['imageUrl'] ?? 'images/coach.png';
     String sportIcon = coach['sportIcon'] ?? 'images/Padel.png';
 
     return Scaffold(

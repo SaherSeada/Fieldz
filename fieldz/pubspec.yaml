@@ -18,6 +18,7 @@ dependencies:
   firebase_auth: ^4.10.1
   cloud_firestore: ^4.15.8
   awesome_dialog: ^3.2.0
+  firebase_core: ^2.27.0
 
 dev_dependencies:
   flutter_test:

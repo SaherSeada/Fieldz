@@ -1,4 +1,5 @@
 class Field {
+  String id;
   String name;
   String location;
   int price;
@@ -6,5 +7,5 @@ class Field {
   String imageUrl;
   Map availability;
 
-  Field(this.name, this.location, this.price, this.rating, this.imageUrl, this.availability);
+  Field(this.id, this.name, this.location, this.price, this.rating, this.imageUrl, this.availability);
 }

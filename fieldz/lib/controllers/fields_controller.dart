@@ -28,7 +28,7 @@ class FieldsController extends GetxController {
       allFields.clear();
       for (var doc in event.docs) {
         var data = doc.data();
-        var field = Field(data['name'], data['location'], data['price'], data['rating'], data['imageURL'], data['availability']);
+        var field = Field(doc.id, data['name'], data['location'], data['price'], data['rating'], data['imageURL'], data['availability']);
         allFields.add(field);
       }
     });

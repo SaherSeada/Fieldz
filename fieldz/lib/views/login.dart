@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fieldz/views/LandingPage.dart';
+import 'package:fieldz/views/Supplier/supplier_dashboard_view.dart';
 import 'package:fieldz/views/user_landing_page.dart';
 import 'package:flutter/material.dart';
 import 'package:fieldz/views/coach_landingpage.dart';
@@ -11,7 +12,7 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:fieldz/theme/theme_constants.dart';
 
 class Login extends StatefulWidget {
-  const Login({Key? key});
+  const Login({super.key});
 
   @override
   State<Login> createState() => _LoginState();
@@ -157,7 +158,7 @@ class _LoginState extends State<Login> {
                             Get.to(() => AdminLandingPage());
                             break;
                           case 'supplier':
-                            Get.to(() => const SupplierLogin());
+                            Get.to(() => SupplierDashboardView());
                             break;
                           case 'coach':
                             Get.to(() => const LandingPage());

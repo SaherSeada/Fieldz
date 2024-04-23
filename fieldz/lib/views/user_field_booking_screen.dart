@@ -14,7 +14,7 @@ class FieldBookingScreen extends StatelessWidget {
           title: Text(controller.title ?? ""),
           centerTitle: true,
         ),
-        body: Obx(() => Stack(children: [
+        body: Obx(() => controller.isLoaded.value ? Stack(children: [
               GridView.builder(
                 itemCount: controller.currentHours.length,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -57,20 +57,58 @@ class FieldBookingScreen extends StatelessWidget {
                   );
                 },
               ),
-              Obx(() => Positioned(
+              Obx(() => controller.bookingDetails.isNotEmpty ? Positioned(
                   bottom: 5,
                   child: Container(
                       padding: const EdgeInsets.all(8),
                       width: Get.width,
-                      height: Get.height / 3,
+                      height: 175.0 + 19 * controller.bookingDetails.length,
                       child: Card(
                           color: Colors.grey.shade200,
                           elevation: 5,
-                          child: Padding(padding: const EdgeInsets.all(8), child: Column(children: [
-                            const Text("Booking", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-                            const SizedBox(height: 15),
-                            Text("${controller.selectedDate} @ ${controller.startTime.value}:00 - ${controller.endTime.value}:00", style: TextStyle(fontSize: 14))
-                          ]))))))
-            ])));
+                          child: Padding(
+                              padding: const EdgeInsets.all(8),
+                              child: Column(children: [
+                                const Text("Booking",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18)),
+                                const SizedBox(height: 15),
+                                Expanded(
+                                    child: ListView.builder(
+                                  itemCount: controller.bookingDetails.length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return Text(
+                                        controller.bookingDetails[index],
+                                        style: const TextStyle(fontSize: 16));
+                                  },
+                                )),
+                                Align(
+                                    alignment: Alignment.bottomRight,
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                      Padding(padding: const EdgeInsets.symmetric(horizontal: 8), child: Column(
+                                        children: [
+                                          const Text("Total Amount", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                                          Text("${controller.numberOfSelectedHours.value * controller.price!}", style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14))
+                                        ],
+                                      )),
+                                      ElevatedButton(
+                                      style: ButtonStyle(
+                                        foregroundColor: MaterialStateProperty
+                                                                  .all<Color>(Colors
+                                                                      .white),
+                                          backgroundColor:
+                                              MaterialStateProperty.all<Color>(
+                                                  Colors.blueAccent)),
+                                      child: const Text("Confirm Booking"),
+                                      onPressed: () {
+                                        controller.confirmBooking();
+                                      },
+                                    )]))
+                              ]))))) : const SizedBox())
+            ]) : const Center(child: CircularProgressIndicator())));
   }
 }

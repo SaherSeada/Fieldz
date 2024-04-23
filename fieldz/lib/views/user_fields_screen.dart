@@ -206,6 +206,8 @@ class FieldsScreen extends StatelessWidget {
                                                                       .fields[
                                                                           index]
                                                                       .availability,
+                                                              "price": controller.fields[index].price,
+                                                              "id": controller.fields[index].id,
                                                               "selected_day": controller
                                                                       .days[
                                                                   controller
