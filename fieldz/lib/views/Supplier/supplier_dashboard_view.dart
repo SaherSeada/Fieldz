@@ -32,8 +32,9 @@ class SupplierDashboardView extends StatelessWidget {
           child: ListView(
             children: [
               // Drawer menu items
+              const SizedBox(height: 20),
               ListTile(
-                title: Text('Profile'),
+                title: const Text('Profile'),
                 onTap: () {
                   Navigator.pop(context); // Close drawer
                   // Navigate to Profile page
@@ -45,20 +46,20 @@ class SupplierDashboardView extends StatelessWidget {
                 },
               ),
               ListTile(
-                title: Text('Pending Courts'),
+                title: const Text('Pending Courts'),
                 onTap: () {
                   Navigator.pop(context); // Close drawer
                   // Navigate to Pending Courts page
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => SupplierPendingCourtsView(),
+                      builder: (context) => const SupplierPendingCourtsView(),
                     ),
                   );
                 },
               ),
               ListTile(
-                title: Text('Your Courts'),
+                title: const Text('Your Courts'),
                 onTap: () {
                   Navigator.pop(context); // Close drawer
                   // Navigate to Your Courts page
@@ -71,7 +72,7 @@ class SupplierDashboardView extends StatelessWidget {
                 },
               ),
               ListTile(
-                title: Text('Reports'),
+                title: const Text('Reports'),
                 onTap: () {
                   Navigator.pop(context); // Close drawer
                   // Navigate to Pending Courts page
@@ -84,7 +85,7 @@ class SupplierDashboardView extends StatelessWidget {
                 },
               ),
               ListTile(
-                title: Text('Help'),
+                title: const Text('Help'),
                 onTap: () {
                   Navigator.pop(context); // Close drawer
                   // Navigate to Pending Courts page
@@ -106,7 +107,7 @@ class SupplierDashboardView extends StatelessWidget {
             ],
           ),
         ),
-        body: Center(
+        body: const Center(
           child: Text('Welcome to the Dashboard!'),
         ),
       ),

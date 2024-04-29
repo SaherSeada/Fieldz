@@ -1,6 +1,6 @@
 import 'package:fieldz/controllers/main_controller.dart';
 import 'package:fieldz/views/LandingPage.dart';
-import 'package:fieldz/views/Supplier/supplier_login.dart';
+import 'package:fieldz/views/Supplier/supplier_dashboard_view.dart';
 import 'package:fieldz/views/coach_landingpage.dart';
 import 'package:fieldz/views/login.dart';
 import 'package:fieldz/views/user_landing_page.dart';
@@ -55,7 +55,7 @@ class MainPage extends StatelessWidget {
           case 'admin':
             return AdminLandingPage();
           case 'supplier':
-            return const SupplierLogin();
+            return SupplierDashboardView();
           case 'coach':
             return const LandingPage();
           default:

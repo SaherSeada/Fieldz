@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:fieldz/theme/theme_constants.dart'; // Import theme constants
 
 class SupplierYourCourtsView extends StatelessWidget {
+  const SupplierYourCourtsView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Theme(
@@ -10,15 +12,15 @@ class SupplierYourCourtsView extends StatelessWidget {
       data: ThemeData(
         brightness: Brightness.light, // Default to light theme
         primaryColor: COLOR_PRIMARY,
-        floatingActionButtonTheme: FloatingActionButtonThemeData(
+        floatingActionButtonTheme: const FloatingActionButtonThemeData(
           backgroundColor: COLOR_ACCENT,
         ),
       ),
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Your Courts'),
+          title: const Text('Your Courts'),
         ),
-        body: SingleChildScrollView(
+        body: const SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.all(20.0),
             child: Column(
@@ -28,7 +30,7 @@ class SupplierYourCourtsView extends StatelessWidget {
             ),
           ),
         ),
-        floatingActionButton: FloatingActionButton(
+        floatingActionButton: Padding(padding: const EdgeInsets.all(7), child: FloatingActionButton(
           onPressed: () {
             Navigator.pop(context);
             Navigator.push(
@@ -36,9 +38,9 @@ class SupplierYourCourtsView extends StatelessWidget {
               MaterialPageRoute(builder: (context) => SupplierFormView()),
             );
           },
-          child: Icon(Icons.add),
+          child: const Icon(Icons.add),
         ),
       ),
-    );
+    ));
   }
 }
