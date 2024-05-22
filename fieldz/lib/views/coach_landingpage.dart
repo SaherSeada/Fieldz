@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import 'Coach_Profile.dart';
+import 'Coach_Activity.dart';
 import 'Coach_Programs.dart';
 
 
@@ -53,9 +53,11 @@ class _LandingPageState extends State<LandingPage> {
       appBar: AppBar(
 
         actions: [
-          IconButton(onPressed: () async{
-            await FirebaseAuth.instance.signOut();
-            Navigator.of(context).pushNamedAndRemoveUntil("login", (route) => false);
+          IconButton(onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => Coach_Activity()),
+            );
           }, icon: Icon(Icons.notifications))
         ] ,
         centerTitle: true,
@@ -221,7 +223,7 @@ class NavigationBar extends StatelessWidget {
               MaterialButton(onPressed: (){
               },
 
-                child: Text("Atheletes"),
+                child: Text("Profile"),
               ),
               Container(
                 width: 5,
@@ -230,11 +232,11 @@ class NavigationBar extends StatelessWidget {
               MaterialButton(onPressed: (){
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Coach_Profile()),
+                  MaterialPageRoute(builder: (context) => Coach_Activity()),
                 );
               },
 
-                child: Text("My Profile"),
+                child: Text("Activity"),
               ),
 
             ],
