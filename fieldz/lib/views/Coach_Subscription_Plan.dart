@@ -83,15 +83,21 @@ class _Coach_PlanState extends State<Coach_Plan> {
   }
 
   void _saveProgramDetails() {
-    programs
-        .add({
+    List<String> formattedDates = selectedDates
+        .map((date) => DateFormat('yyyy-MM-dd').format(date))
+        .toList();
+    List<String> formattedTimes = selectedDates
+        .map((date) => DateFormat('HH:mm').format(date))
+        .toList();
+
+    programs.add({
       "Program_name": _nameController.text,
       "Location": _locationController.text,
       "Duration": _durationController.text,
       "Price": _priceController.text,
-      "Schedule": selectedDates.map((date) => date.toString()).toList(),
-    })
-        .then((value) {
+      "Schedule_dates": formattedDates,
+      "Schedule_times": formattedTimes,
+    }).then((value) {
       // Clear fields after successful save
       _nameController.clear();
       _locationController.clear();
@@ -101,9 +107,9 @@ class _Coach_PlanState extends State<Coach_Plan> {
       setState(() {
         selectedDates.clear();
       });
-    })
-        .catchError((error) => print("Failed to add program: $error"));
+    }).catchError((error) => print("Failed to add program: $error"));
   }
+
 
 
   @override
@@ -227,7 +233,7 @@ class _Coach_PlanState extends State<Coach_Plan> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "Add Session",
+                      "Add Program",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: Colors.amber,
