@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:fieldz/views/LandingPage.dart';
-import 'package:fieldz/views/Supplier/supplier_dashboard_view.dart';
+import 'package:fieldz/views/admin_landing_page.dart';
+import 'package:fieldz/views/supplier_dashboard_view.dart';
+import 'package:fieldz/views/supplier_login.dart';
 import 'package:fieldz/views/user_landing_page.dart';
 import 'package:flutter/material.dart';
-import 'package:fieldz/views/coach_landingpage.dart';
+import 'package:fieldz/views/coach_landing_page.dart';
 import 'package:fieldz/views/signup.dart';
-import 'package:fieldz/views/Supplier/supplier_login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';

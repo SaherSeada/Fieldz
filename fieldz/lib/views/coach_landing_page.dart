@@ -2,8 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import 'Coach_Activity.dart';
-import 'Coach_Programs.dart';
+import 'coach_activity_screen.dart';
+import 'coach_programs_screen.dart';
 
 
 

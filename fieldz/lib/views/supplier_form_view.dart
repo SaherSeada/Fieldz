@@ -1,6 +1,6 @@
+import 'package:fieldz/views/supplier_your_courts_view.dart';
 import 'package:flutter/material.dart';
-import 'package:fieldz/theme/theme_constants.dart'; // Import theme constants
-import 'package:fieldz/views/Supplier/Menu/addCourt/supplier_your_courts_view.dart'; // Import SupplierYourCourtsView
+import 'package:fieldz/theme/theme_constants.dart';
 
 class SupplierFormView extends StatelessWidget {
   const SupplierFormView({Key? key});

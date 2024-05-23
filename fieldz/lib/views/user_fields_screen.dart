@@ -1,4 +1,4 @@
-import 'package:fieldz/controllers/fields_controller.dart';
+import 'package:fieldz/controllers/user_fields_controller.dart';
 import 'package:fieldz/controllers/user_drawer_controller.dart';
 import 'package:fieldz/views/user_field_booking_screen.dart';
 import 'package:fieldz/views/widgets/user_drawer.dart';

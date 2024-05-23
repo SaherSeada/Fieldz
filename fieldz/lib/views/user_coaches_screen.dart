@@ -1,4 +1,4 @@
-import 'package:fieldz/controllers/coaches_controller.dart';
+import 'package:fieldz/controllers/user_coaches_controller.dart';
 import 'package:fieldz/controllers/user_drawer_controller.dart';
 import 'package:fieldz/views/widgets/user_drawer.dart';
 import 'package:flutter/material.dart';

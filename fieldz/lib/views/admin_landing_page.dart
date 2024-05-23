@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'CoachesListPage.dart';
-import 'FieldListPage.dart';
+import 'admin_coaches_screen.dart';
+import 'admin_fields_screen.dart';
 
 class AdminLandingPage extends StatelessWidget {
   @override
@@ -9,8 +9,8 @@ class AdminLandingPage extends StatelessWidget {
       appBar: AppBar(
         title: Text('CONTROL ROOM'),
         centerTitle: true,
-        backgroundColor: Colors.white, // Changed to white
-        elevation: 0, // Remove shadow
+        backgroundColor: Colors.white,
+        elevation: 0,
       ),
       body: Center(
         child: Column(

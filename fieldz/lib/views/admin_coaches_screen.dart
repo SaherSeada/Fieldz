@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'CoachProfilePage.dart'; // Make sure this path is correct.
+import 'admin_coach_details_screen.dart'; // Make sure this path is correct.
 
 class CoachesListPage extends StatelessWidget {
   final List<Map<String, dynamic>> coaches = [

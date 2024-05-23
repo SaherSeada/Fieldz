@@ -1,11 +1,11 @@
 import 'package:fieldz/controllers/supplier_dashboard_controller.dart';
 import 'package:fieldz/views/login.dart';
+import 'package:fieldz/views/supplier_profile_view.dart';
+import 'package:fieldz/views/supplier_your_courts_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:fieldz/theme/theme_constants.dart'; // Import theme constants
-import 'package:fieldz/views/Supplier/Menu/supplier_profile_view.dart';
+import 'package:fieldz/theme/theme_constants.dart';
 import 'package:fieldz/views/supplier/Menu/supplier_pending_courts_view.dart';
-import 'package:fieldz/views/Supplier/Menu/addCourt/supplier_your_courts_view.dart';
 import 'package:fieldz/views/supplier/Menu/Help/supplier_help_view.dart';
 import 'package:fieldz/views/supplier/Menu/supplier_reports_view.dart';
 import 'package:get/get.dart';
@@ -13,7 +13,8 @@ import 'package:get/get.dart';
 class SupplierDashboardView extends StatelessWidget {
   SupplierDashboardView({super.key});
 
-  final SupplierDashboardController controller = Get.put(SupplierDashboardController());
+  final SupplierDashboardController controller =
+      Get.put(SupplierDashboardController());
 
   @override
   Widget build(BuildContext context) {

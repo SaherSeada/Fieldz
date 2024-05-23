@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:fieldz/controllers/fields_controller.dart';
+import 'package:fieldz/controllers/user_fields_controller.dart';
 import 'package:fieldz/views/widgets/snackbar.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
