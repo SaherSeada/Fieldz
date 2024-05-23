@@ -1,4 +1,4 @@
-import 'coach_landingpage.dart';
+import 'coach_landing_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -16,17 +16,17 @@ class SplashScreenState extends State<SplashScreen> {
     // Delay for 5 seconds
     Future.delayed(const Duration(seconds: 5), () {
       // Navigate to the login screen
-      if(FirebaseAuth.instance.currentUser != null && FirebaseAuth.instance.currentUser!.emailVerified){
+      if (FirebaseAuth.instance.currentUser != null &&
+          FirebaseAuth.instance.currentUser!.emailVerified) {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const LandingPage()),
-        );} else {
+        );
+      } else {
         // Navigator.pushReplacement(
         //   context,
         //   MaterialPageRoute(builder: (context) => Login()),);
-
       }
-
     });
   }
 

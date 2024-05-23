@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'Coach_Subscription_Plan.dart';
+import 'coach_subscription_plan_screen.dart';
 
 class Coach_Programs extends StatefulWidget {
   const Coach_Programs({super.key});
@@ -18,12 +18,12 @@ class _Coach_ProgramsState extends State<Coach_Programs> {
   TextEditingController _durationController = TextEditingController();
   TextEditingController _PriceController = TextEditingController();
 
-  CollectionReference Sessions = FirebaseFirestore.instance.collection('Sessions');
+  CollectionReference Sessions =
+      FirebaseFirestore.instance.collection('Sessions');
 
   Future<void> addSession() {
     // Call the user's CollectionReference to add a new user
-    return Sessions
-        .add({
+    return Sessions.add({
       "Program_name": _nameController.text,
       "location": _locationController.text,
       "duration": _durationController.text,
@@ -35,26 +35,31 @@ class _Coach_ProgramsState extends State<Coach_Programs> {
         .catchError((error) => print("Failed to add user: $error"));
   }
 
-
-  void _showTimePicker(){
-    showTimePicker(context: context,
-        initialTime: TimeOfDay.now()).then((value) {
+  void _showTimePicker() {
+    showTimePicker(context: context, initialTime: TimeOfDay.now())
+        .then((value) {
       setState(() {
         _timeOfDay = value!;
       });
     });
   }
+
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(length: 2,
+    return DefaultTabController(
+      length: 2,
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.blueGrey,
           title: const Text("Program Section"),
           centerTitle: true,
           bottom: TabBar(tabs: [
-            Tab(child: Text("Quick-Session"),),
-            Tab(child: Text("Subscription-Plan"),),
+            Tab(
+              child: Text("Quick-Session"),
+            ),
+            Tab(
+              child: Text("Subscription-Plan"),
+            ),
           ]),
         ),
         body: SafeArea(
@@ -67,7 +72,8 @@ class _Coach_ProgramsState extends State<Coach_Programs> {
                   scrollDirection: Axis.vertical,
                   child: Column(
                     children: [
-                      Text("Fill your Session here",
+                      Text(
+                        "Fill your Session here",
                         style: TextStyle(
                           fontSize: 20,
                           color: Colors.blueGrey,
@@ -77,12 +83,9 @@ class _Coach_ProgramsState extends State<Coach_Programs> {
                         controller: _nameController,
                         decoration: InputDecoration(
                             prefixText: "Program Name: ",
-                            border: UnderlineInputBorder(
-
-                            ),
+                            border: UnderlineInputBorder(),
                             labelText: "Program Name",
-                            labelStyle: TextStyle(color: Colors.blueGrey)
-                        ),
+                            labelStyle: TextStyle(color: Colors.blueGrey)),
                       ),
                       SizedBox(
                         height: 15,
@@ -91,12 +94,9 @@ class _Coach_ProgramsState extends State<Coach_Programs> {
                         controller: _locationController,
                         decoration: InputDecoration(
                             prefixText: "Location: ",
-                            border: UnderlineInputBorder(
-
-                            ),
+                            border: UnderlineInputBorder(),
                             labelText: "Meeting Location",
-                            labelStyle: TextStyle(color: Colors.blueGrey)
-                        ),
+                            labelStyle: TextStyle(color: Colors.blueGrey)),
                       ),
                       SizedBox(
                         height: 15,
@@ -105,12 +105,9 @@ class _Coach_ProgramsState extends State<Coach_Programs> {
                         controller: _durationController,
                         decoration: InputDecoration(
                             prefixText: "Session time: ",
-                            border: UnderlineInputBorder(
-
-                            ),
+                            border: UnderlineInputBorder(),
                             labelText: "Duration",
-                            labelStyle: TextStyle(color: Colors.blueGrey)
-                        ),
+                            labelStyle: TextStyle(color: Colors.blueGrey)),
                       ),
                       SizedBox(
                         height: 15,
@@ -119,22 +116,19 @@ class _Coach_ProgramsState extends State<Coach_Programs> {
                         controller: _PriceController,
                         decoration: InputDecoration(
                             prefixText: "Total Price : ",
-                            border: UnderlineInputBorder(
-
-                            ),
+                            border: UnderlineInputBorder(),
                             labelText: "Price",
-                            labelStyle: TextStyle(color: Colors.blueGrey)
-                        ),
+                            labelStyle: TextStyle(color: Colors.blueGrey)),
                       ),
                       SizedBox(
                         height: 15,
                       ),
-                      Text("Select Date & Time",
+                      Text(
+                        "Select Date & Time",
                         style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
-                            color: Colors.blueGrey
-                        ),
+                            color: Colors.blueGrey),
                       ),
                       SizedBox(
                         height: 5,
@@ -153,10 +147,8 @@ class _Coach_ProgramsState extends State<Coach_Programs> {
                                   prefixIcon: Icon(Icons.calendar_today),
                                   focusedBorder: OutlineInputBorder(
                                     borderSide: BorderSide(color: Colors.blue),
-                                  )
-                              ),
+                                  )),
                               onTap: _selectDate,
-
                             ),
                           ),
                           SizedBox(width: 10),
@@ -164,69 +156,67 @@ class _Coach_ProgramsState extends State<Coach_Programs> {
                             child: TextField(
                               readOnly: true,
                               decoration: InputDecoration(
-                                  labelText: "Time:"+ _timeOfDay.format(context).toString(),
+                                  labelText: "Time:" +
+                                      _timeOfDay.format(context).toString(),
                                   labelStyle: TextStyle(color: Colors.black),
                                   filled: true,
                                   fillColor: Colors.grey,
                                   prefixIcon: Icon(Icons.timer),
                                   focusedBorder: OutlineInputBorder(
                                     borderSide: BorderSide(color: Colors.blue),
-                                  )
-                              ),
+                                  )),
                               onTap: _showTimePicker,
-
                             ),
                           ),
                         ],
                       ),
-                      SizedBox(height: 15,),
-
-                  MaterialButton(onPressed: (){
-                    addSession();
-                    _nameController.clear();
-                    _locationController.clear();
-                    _durationController.clear();
-                    _PriceController.clear();
-                    _dateController.clear();
-                    _timeController.clear();
-                  },
-                          child:Row(
+                      SizedBox(
+                        height: 15,
+                      ),
+                      MaterialButton(
+                          onPressed: () {
+                            addSession();
+                            _nameController.clear();
+                            _locationController.clear();
+                            _durationController.clear();
+                            _PriceController.clear();
+                            _dateController.clear();
+                            _timeController.clear();
+                          },
+                          child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text("Add Session",style:TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.amber
+                              Text(
+                                "Add Session",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.amber),
                               ),
+                              SizedBox(
+                                width: 10,
                               ),
-                              SizedBox(width: 10,),
                               Icon(Icons.add),
                             ],
-                          )
-                        ),
-
-
+                          )),
                     ],
                   ),
                 ),
                 Coach_Plan(),
               ],
-
             ),
           ),
         ),
       ),
     );
-
-
-
   }
-  Future<void> _selectDate()async{
-    DateTime? _picked = await showDatePicker(context: context,
+
+  Future<void> _selectDate() async {
+    DateTime? _picked = await showDatePicker(
+        context: context,
         initialDate: DateTime.now(),
         firstDate: DateTime(2024),
-        lastDate: DateTime(2100)
-    );
-    if (_picked != null){
+        lastDate: DateTime(2100));
+    if (_picked != null) {
       setState(() {
         _dateController.text = _picked.toString().split(" ")[0];
       });

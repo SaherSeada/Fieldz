@@ -1,8 +1,8 @@
 import 'package:fieldz/controllers/main_controller.dart';
-import 'package:fieldz/views/LandingPage.dart';
-import 'package:fieldz/views/Supplier/supplier_login.dart';
-import 'package:fieldz/views/coach_landingpage.dart';
+import 'package:fieldz/views/admin_landing_page.dart';
+import 'package:fieldz/views/coach_landing_page.dart';
 import 'package:fieldz/views/login.dart';
+import 'package:fieldz/views/supplier_login.dart';
 import 'package:fieldz/views/user_landing_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
