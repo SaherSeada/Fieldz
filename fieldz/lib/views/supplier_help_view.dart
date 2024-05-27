@@ -1,6 +1,6 @@
+import 'package:fieldz/views/supplier_bug_view.dart';
 import 'package:fieldz/views/supplier_chat_view.dart';
 import 'package:flutter/material.dart';
-import 'package:fieldz/views/supplier/Menu/Help/supplier_bug_view.dart';
 
 class SupplierHelpView extends StatelessWidget {
   @override

@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fieldz/views/supplier_dashboard_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:fieldz/theme/theme_constants.dart';
 import 'package:fieldz/views/signup.dart';
-import 'package:fieldz/views/supplier/supplier_dashboard_view.dart';
 import 'package:fieldz/views/user_fields_screen.dart';
 
 class SupplierLogin extends StatefulWidget {
