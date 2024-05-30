@@ -1,5 +1,7 @@
 import 'package:fieldz/controllers/user_drawer_controller.dart';
 import 'package:fieldz/controllers/user_marketplace_controller.dart';
+import 'package:fieldz/views/user_add_product_screen.dart';
+import 'package:fieldz/views/user_product_details_screen.dart';
 import 'package:fieldz/views/widgets/user_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -31,6 +33,12 @@ class UserMarketplaceScreen extends StatelessWidget {
             toolbarHeight: 60,
             automaticallyImplyLeading: false),
         drawer: userDrawer(),
+        floatingActionButton: ElevatedButton(
+          child: const Text("Add a Product"),
+          onPressed: () {
+            Get.to(UserCreateProductScreen());
+          },
+        ),
         body: Obx(() => controller.isLoaded.value
             ? RefreshIndicator(
                 onRefresh: () async {
@@ -39,7 +47,7 @@ class UserMarketplaceScreen extends StatelessWidget {
                 child: GridView.builder(
                   itemCount: controller.products.length,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2, childAspectRatio: 0.85),
+                      crossAxisCount: 2, childAspectRatio: 0.77),
                   itemBuilder: (context, index) {
                     final product = controller.products[index];
                     return Padding(
@@ -47,7 +55,8 @@ class UserMarketplaceScreen extends StatelessWidget {
                         child: GridTile(
                           child: GestureDetector(
                             onTap: () {
-                              // Handle tapping on the product
+                              Get.to(() => UserProductDetailsScreen(),
+                                  arguments: {'productID': product.id});
                             },
                             child: Card(
                               color: Colors.grey.shade200,
@@ -56,40 +65,48 @@ class UserMarketplaceScreen extends StatelessWidget {
                                 children: <Widget>[
                                   // Product image
                                   SizedBox(
-                                    height: 100,
-                                    child: Image.network(
-                                      product.imageUrl,
-                                      fit: BoxFit.fill,
-                                    ),
-                                  ),
+                                      height: 125,
+                                      child: Center(
+                                        child: Image.network(
+                                          product.imageUrl,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      )),
                                   // Product title
                                   SizedBox(
-                                      height: 65,
+                                      height: 55,
                                       child: Align(
                                           alignment: Alignment.centerLeft,
                                           child: Padding(
-                                            padding: const EdgeInsets.all(9.0),
-                                            child: Text(
-                                              product.title,
-                                              maxLines: 2,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: TextStyle(
-                                                  fontSize: 18.0,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Colors.blue.shade800),
-                                            ),
-                                          ))),
+                                              padding:
+                                                  const EdgeInsets.fromLTRB(
+                                                      8, 0, 8, 3),
+                                              child: Center(
+                                                child: Text(
+                                                  product.title,
+                                                  maxLines: 2,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  style: TextStyle(
+                                                      fontSize: 18.0,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color:
+                                                          Colors.blue.shade800),
+                                                ),
+                                              )))),
                                   const SizedBox(height: 5),
                                   // Product price
                                   Padding(
                                     padding: const EdgeInsets.only(
                                         left: 10.0, right: 8.0, bottom: 8.0),
-                                    child: Text(
+                                    child: Center(
+                                        child: Text(
                                       '${product.price.toStringAsFixed(2)} EGP',
                                       style: const TextStyle(
-                                          fontSize: 15.0,
+                                          fontSize: 16.0,
                                           fontWeight: FontWeight.bold),
-                                    ),
+                                    )),
                                   ),
                                 ],
                               ),

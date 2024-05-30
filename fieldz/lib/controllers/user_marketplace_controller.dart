@@ -18,7 +18,8 @@ class UserMarketplaceController extends GetxController {
       products.clear();
       for (var doc in event.docs) {
         var data = doc.data();
-        var product = Product(data['name'], data['imageURL'], data['price'].toDouble());
+        var product = Product(
+            doc.id, data['name'], data['imageURL'], data['price'].toDouble());
         products.add(product);
       }
     });

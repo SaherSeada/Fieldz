@@ -46,7 +46,7 @@ class MainPage extends StatelessWidget {
     return Obx(() {
       if (mainController.user.value == null) {
         // User is not signed in, navigate to login page
-        return const Login();
+        return Login();
       } else {
         // User is signed in, navigate to home page
         switch (mainController.userType.value) {
@@ -59,7 +59,7 @@ class MainPage extends StatelessWidget {
           case 'coach':
             return const LandingPage();
           default:
-            return const Login();
+            return Login();
         }
       }
     });
