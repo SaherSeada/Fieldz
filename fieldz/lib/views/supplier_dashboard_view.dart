@@ -101,7 +101,7 @@ class SupplierDashboardView extends StatelessWidget {
                 title: const Text('Logout'),
                 onTap: () {
                   FirebaseAuth.instance.signOut();
-                  Get.offAll(() => const Login());
+                  Get.offAll(() => Login());
                 },
               ),
             ],
