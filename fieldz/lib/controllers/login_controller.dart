@@ -53,13 +53,17 @@ class LoginController extends GetxController {
             "Your account is not verified. Please verify your account to continue.");
       }
     } on FirebaseAuthException catch (e) {
-      print(e.code);
-      if (e.code == 'user-not-found') {
+      if (e.code == 'invalid-credential') {
+        messageDialog("Invalid Credentials",
+            "These credentials don't exist. Please check the details and try again.");
+      } else if (e.code == 'user-not-found') {
         messageDialog("User Not Found",
             "The user you are looking for does not exist. Please check the details and try again.");
       } else if (e.code == 'wrong-password') {
         messageDialog("Wrong Password",
             "The password you entered is incorrect. Please try again.");
+      } else {
+        messageDialog("Something Went Wrong", "Please try again.");
       }
     }
   }
