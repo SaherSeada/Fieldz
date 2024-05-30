@@ -24,9 +24,10 @@ class UserProductDetailsScreen extends StatelessWidget {
                     children: <Widget>[
                       Center(
                         child: Image.network(
-                          'https://via.placeholder.com/400',
+                          controller.productDetails['imageURL'] ?? "",
                           height: 200,
-                          width: 200,
+                          width: 400,
+                          fit: BoxFit.cover,
                         ),
                       ),
                       const SizedBox(height: 16),
