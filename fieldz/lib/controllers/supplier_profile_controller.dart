@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class UserProfileController extends GetxController {
+class SupplierProfileController extends GetxController {
   late String userID;
   RxBool isLoaded = false.obs;
   RxBool enableEdit = false.obs;
