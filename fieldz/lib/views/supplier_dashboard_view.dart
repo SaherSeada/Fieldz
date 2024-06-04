@@ -1,10 +1,9 @@
 import 'package:fieldz/controllers/supplier_dashboard_controller.dart';
 import 'package:fieldz/views/login.dart';
 import 'package:fieldz/views/supplier_help_view.dart';
-import 'package:fieldz/views/supplier_pending_courts_view.dart';
 import 'package:fieldz/views/supplier_profile_view.dart';
 import 'package:fieldz/views/supplier_reports_view.dart';
-import 'package:fieldz/views/supplier_your_courts_view.dart';
+import 'package:fieldz/views/supplier_your_fields_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fieldz/theme/theme_constants.dart';
@@ -32,9 +31,23 @@ class SupplierDashboardView extends StatelessWidget {
         drawer: Drawer(
           child: ListView(
             children: [
+              const SizedBox(
+                  height: 125.0,
+                  child: DrawerHeader(
+                    decoration: BoxDecoration(
+                      color: Colors.blue,
+                    ),
+                    child: Center(
+                      child: Text('Menu',
+                          style: TextStyle(
+                              fontSize: 25,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white)),
+                    ),
+                  )),
               // Drawer menu items
               ListTile(
-                title: Text('Profile'),
+                title: const Text('Profile'),
                 onTap: () {
                   Navigator.pop(context); // Close drawer
                   // Navigate to Profile page
@@ -46,33 +59,15 @@ class SupplierDashboardView extends StatelessWidget {
                 },
               ),
               ListTile(
-                title: Text('Pending Courts'),
-                onTap: () {
-                  Navigator.pop(context); // Close drawer
-                  // Navigate to Pending Courts page
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => SupplierPendingCourtsView(),
-                    ),
-                  );
-                },
-              ),
-              ListTile(
-                title: Text('Your Courts'),
+                title: const Text('Your Courts'),
                 onTap: () {
                   Navigator.pop(context); // Close drawer
                   // Navigate to Your Courts page
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => SupplierYourCourtsView(),
-                    ),
-                  );
+                  Get.to(() => SupplierYourFieldsView());
                 },
               ),
               ListTile(
-                title: Text('Reports'),
+                title: const Text('Reports'),
                 onTap: () {
                   Navigator.pop(context); // Close drawer
                   // Navigate to Pending Courts page
@@ -85,7 +80,7 @@ class SupplierDashboardView extends StatelessWidget {
                 },
               ),
               ListTile(
-                title: Text('Help'),
+                title: const Text('Help'),
                 onTap: () {
                   Navigator.pop(context); // Close drawer
                   // Navigate to Pending Courts page

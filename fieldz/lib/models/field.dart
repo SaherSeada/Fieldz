@@ -6,6 +6,8 @@ class Field {
   int rating;
   String imageUrl;
   Map availability;
+  String? status;
 
-  Field(this.id, this.name, this.location, this.price, this.rating, this.imageUrl, this.availability);
+  Field(this.id, this.name, this.location, this.price, this.rating,
+      this.imageUrl, this.availability);
 }
