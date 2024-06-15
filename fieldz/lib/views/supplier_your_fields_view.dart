@@ -1,4 +1,5 @@
 import 'package:fieldz/controllers/supplier_your_fields_controller.dart';
+import 'package:fieldz/models/field.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -49,7 +50,7 @@ class SupplierYourFieldsView extends StatelessWidget {
                 ]))));
   }
 
-  fieldWidget(field) {
+  fieldWidget(Field field) {
     return Card(
       elevation: 4,
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -72,15 +73,27 @@ class SupplierYourFieldsView extends StatelessWidget {
           ),
         ),
         subtitle: Text(
-          field.status == 'verified' ? 'Verified' : 'Pending',
+          field.status![0].toUpperCase() + field.status!.substring(1),
           style: TextStyle(
-            color: field.status == 'verified' ? Colors.green : Colors.orange,
+            color: field.status == 'verified'
+                ? Colors.green
+                : field.status == 'pending'
+                    ? Colors.orange
+                    : Colors.red,
             fontWeight: FontWeight.bold,
           ),
         ),
         trailing: Icon(
-          field.status == 'verified' ? Icons.check_circle : Icons.info,
-          color: field.status == 'verified' ? Colors.green : Colors.orange,
+          field.status == 'verified'
+              ? Icons.check_circle
+              : field.status == 'pending'
+                  ? Icons.info
+                  : Icons.warning,
+          color: field.status == 'verified'
+              ? Colors.green
+              : field.status == 'pending'
+                  ? Colors.orange
+                  : Colors.red,
         ),
         onTap: () {
           // Add functionality to navigate to field details screen
