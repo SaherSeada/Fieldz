@@ -12,6 +12,7 @@ class SupplierAddFieldController extends GetxController {
   final TextEditingController sportController = TextEditingController();
   final TextEditingController locationController = TextEditingController();
   final TextEditingController mapsLinkController = TextEditingController();
+  final TextEditingController phoneNumberController = TextEditingController();
   final TextEditingController minCapacityController = TextEditingController();
   final TextEditingController numberOfCourtsController =
       TextEditingController();
@@ -29,6 +30,7 @@ class SupplierAddFieldController extends GetxController {
         'imageURL': "",
         'status': 'pending',
         'mapsLink': mapsLinkController.text,
+        'phoneNumber': phoneNumberController.text,
         'minCapacity': minCapacityController.text,
         'numberOfCourts': int.parse(numberOfCourtsController.text),
         'supplier_id': userID,

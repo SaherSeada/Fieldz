@@ -1,91 +1,112 @@
+import 'package:fieldz/controllers/admin_coach_details_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-class CoachProfilePage extends StatelessWidget {
-  final Map<String, dynamic> coach;
+class AdminCoachDetailsPage extends StatelessWidget {
+  AdminCoachDetailsPage({Key? key}) : super(key: key);
 
-  CoachProfilePage({Key? key, required this.coach}) : super(key: key);
+  final AdminCoachDetailsController controller =
+      Get.put(AdminCoachDetailsController());
 
   @override
   Widget build(BuildContext context) {
-    // Dummy data for design matching
-    String name = coach['name'] ?? 'John Doe';
-    String email = coach['email'] ?? 'example@mail.com';
-    String userName = coach['userName'] ?? 'JohnDoe01';
-    String phone = coach['phone'] ?? '0101234567';
-    String status = coach['status'] ?? 'Verified';
-    int rating = coach['rating'] ?? 5;
-    String imageUrl = coach['imageUrl'] ?? 'images/coach.png';
-    String sportIcon = coach['sportIcon'] ?? 'images/Padel.png';
-
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.menu, color: Colors.black),
-          onPressed: () {
-            Scaffold.of(context).openDrawer();
-          },
+        appBar: AppBar(
+          title: Text(controller.coach.name),
+          backgroundColor: Colors.white,
+          elevation: 0,
         ),
-        backgroundColor: Colors.white,
-        elevation: 0, // Removes the shadow from the app bar.
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                CircleAvatar(
-                  radius: 40,
-                  backgroundImage: AssetImage(imageUrl),
-                ),
-                SizedBox(width: 16),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Sport',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black54,
-                      ),
+        body: Obx(() => controller.isLoaded.value
+            ? SingleChildScrollView(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        CircleAvatar(
+                          radius: 40,
+                          backgroundImage:
+                              NetworkImage(controller.coach.avatarUrl),
+                        ),
+                        const SizedBox(width: 16),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              '${controller.coach.sport[0].toUpperCase() + controller.coach.sport.substring(1)} Coach',
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black54,
+                              ),
+                            ),
+                            _buildRatingStars(controller.coach.rating),
+                          ],
+                        ),
+                        const Spacer(),
+                        Icon(
+                          controller.coach.status == 'verified'
+                              ? Icons.check_circle
+                              : controller.coach.status == 'rejected'
+                                  ? Icons.warning
+                                  : Icons.info,
+                          color: controller.coach.status == 'verified'
+                              ? Colors.green
+                              : controller.coach.status == 'rejected'
+                                  ? Colors.red
+                                  : Colors.orange,
+                          size: 30,
+                        ),
+                      ],
                     ),
-                    _buildRatingStars(rating),
+                    const SizedBox(height: 32),
+                    _buildProfileInfo('Name', controller.coach.name),
+                    _buildProfileInfo('Email', controller.coach.email),
+                    _buildProfileInfo('User Name', controller.coach.username),
+                    _buildProfileInfo(
+                        'Phone Number', controller.coach.phoneNumber),
+                    const SizedBox(height: 18),
+                    _buildProfileInfo(
+                        'Status',
+                        controller.coach.status![0].toUpperCase() +
+                            controller.coach.status!.substring(1)),
+                    controller.coach.status == "pending"
+                        ? Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 20),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: <Widget>[
+                                ElevatedButton(
+                                  onPressed: () {
+                                    controller.onPressed('verified');
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor:
+                                        Colors.green, // Background color
+                                  ),
+                                  child: const Text('Verify'),
+                                ),
+                                const SizedBox(
+                                    width: 20), // Add space between the buttons
+                                ElevatedButton(
+                                  onPressed: () {
+                                    controller.onPressed('rejected');
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor:
+                                        Colors.red, // Background color
+                                  ),
+                                  child: const Text('Reject'),
+                                ),
+                              ],
+                            ))
+                        : const SizedBox()
                   ],
                 ),
-                Spacer(),
-                Image.asset('images/Verify.png', width: 24),
-              ],
-            ),
-            SizedBox(height: 32),
-            _buildProfileInfo('Name', name),
-            _buildProfileInfo('Email', email),
-            _buildProfileInfo('User Name', userName),
-            _buildProfileInfo('Phone Number', phone),
-            SizedBox(height: 24),
-            DropdownButtonFormField<String>(
-              value: status,
-              icon: Icon(Icons.keyboard_arrow_down, color: Colors.black54),
-              decoration: InputDecoration(
-                contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                border: OutlineInputBorder(),
-                labelText: 'Status',
-              ),
-              items: <String>['Verified', 'Pending', 'Not Verified']
-                  .map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
-              onChanged: (String? newValue) {},
-            ),
-          ],
-        ),
-      ),
-    );
+              )
+            : const Center(child: CircularProgressIndicator())));
   }
 
   Widget _buildProfileInfo(String title, String info) {
@@ -94,15 +115,17 @@ class CoachProfilePage extends StatelessWidget {
       children: <Widget>[
         Text(
           title,
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.bold,
             color: Colors.black87,
           ),
         ),
+        const SizedBox(height: 8),
         TextField(
+          enabled: false,
           controller: TextEditingController(text: info),
-          decoration: InputDecoration(
+          decoration: const InputDecoration(
             isDense: true,
             enabledBorder: UnderlineInputBorder(
               borderSide: BorderSide(color: Colors.black54),
@@ -111,9 +134,9 @@ class CoachProfilePage extends StatelessWidget {
               borderSide: BorderSide(color: Colors.black87),
             ),
           ),
-          style: TextStyle(fontSize: 16, color: Colors.black87),
+          style: const TextStyle(fontSize: 16, color: Colors.black87),
         ),
-        SizedBox(height: 16),
+        const SizedBox(height: 16),
       ],
     );
   }

@@ -1,120 +1,159 @@
+import 'package:fieldz/controllers/admin_field_details_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-class FieldProfilePage extends StatelessWidget {
-  final Map<String, dynamic> fieldData;
+class AdminFieldDetailsPage extends StatelessWidget {
+  AdminFieldDetailsPage({super.key});
 
-  // Constructor
-  FieldProfilePage({required this.fieldData});
+  final AdminFieldDetailsController controller =
+      Get.put(AdminFieldDetailsController());
 
   @override
   Widget build(BuildContext context) {
-    // Null checks with default values
-    String imageUrl = fieldData['imageUrl'] as String? ?? 'images/default_image.png';
-    String name = fieldData['name'] as String? ?? 'No name provided';
-    String ownerEmail = fieldData['ownerEmail'] as String? ?? 'No email provided';
-    String ownerPhone = fieldData['ownerPhone'] as String? ?? 'No phone provided';
-    String fieldPhone = fieldData['fieldPhone'] as String? ?? 'No field phone provided';
-    String status = fieldData['status'] as String? ?? 'Accepted'; // Default status
-    int rating = fieldData['rating'] as int? ?? 0;
-
-    // Ensure that status is one of the valid options
-    final List<String> statusOptions = ['Accepted', 'Pending', 'Rejected'];
-    if (!statusOptions.contains(status)) {
-      status = 'Accepted'; // Default to 'Accepted' if currentStatus is unknown
-    }
-
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () => Navigator.of(context).pop(),
+        appBar: AppBar(
+          title: Text(controller.field.name),
+          backgroundColor: Colors.white,
+          elevation: 1,
         ),
-        backgroundColor: Colors.white,
-        elevation: 1,
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Image.asset(
-              imageUrl,
-              height: 200,
-              width: double.infinity,
-              fit: BoxFit.cover,
-              errorBuilder: (context, error, stackTrace) => Container(
-                height: 200,
-                color: Colors.grey[300],
-                child: Icon(Icons.broken_image),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _buildTextField(label: 'Field Name', value: name, context: context),
-                  _buildTextField(label: 'Owner Email', value: ownerEmail, context: context),
-                  _buildTextField(label: 'Owner Phone Number', value: ownerPhone, context: context),
-                  _buildTextField(label: 'Field Phone Number', value: fieldPhone, context: context),
-                  SizedBox(height: 20),
-                  _buildStatusDropdown(status, statusOptions, context),
-                  SizedBox(height: 20),
-                  _buildRating(rating),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+        body: Obx(() => controller.isLoaded.value
+            ? SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Image.network(
+                      controller.field.imageUrl,
+                      height: 200,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) => Container(
+                        height: 200,
+                        color: Colors.grey[300],
+                        child: const Icon(Icons.broken_image),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(18.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          _buildTextField(
+                              label: 'Field Name',
+                              value: controller.field.name,
+                              context: context),
+                          _buildTextField(
+                              label: 'Location',
+                              value: controller.field.location,
+                              context: context),
+                          _buildTextField(
+                              label: 'Price',
+                              value: '${controller.field.price} EGP / Hour',
+                              context: context),
+                          _buildTextField(
+                              label: 'Sport',
+                              value: controller.field.sport[0].toUpperCase() +
+                                  controller.field.sport.substring(1),
+                              context: context),
+                          _buildTextField(
+                              label: 'Owner Email',
+                              value: controller.supplierEmail,
+                              context: context),
+                          _buildTextField(
+                              label: 'Owner Phone Number',
+                              value: controller.supplierPhone,
+                              context: context),
+                          _buildTextField(
+                              label: 'Field Phone Number',
+                              value: controller.field.phone,
+                              context: context),
+                          const SizedBox(height: 5),
+                          _buildRating(controller.field.rating),
+                          const SizedBox(height: 22),
+                          _buildTextField(
+                              label: 'Status',
+                              value: controller.field.status![0].toUpperCase() +
+                                  controller.field.status!.substring(1),
+                              context: context),
+                          controller.field.status == "pending"
+                              ? Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 20),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    children: <Widget>[
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          controller.onPressed('verified');
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor:
+                                              Colors.green, // Background color
+                                        ),
+                                        child: const Text('Verify'),
+                                      ),
+                                      const SizedBox(
+                                          width:
+                                              20), // Add space between the buttons
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          controller.onPressed('rejected');
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor:
+                                              Colors.red, // Background color
+                                        ),
+                                        child: const Text('Reject'),
+                                      ),
+                                    ],
+                                  ))
+                              : const SizedBox()
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            : const Center(child: CircularProgressIndicator())));
   }
 
-  Widget _buildTextField({required String label, required String value, required BuildContext context}) {
+  Widget _buildTextField(
+      {required String label,
+      required String value,
+      required BuildContext context}) {
     return Padding(
-      padding: EdgeInsets.only(bottom: 8.0),
+      padding: const EdgeInsets.only(bottom: 15.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(label, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+          Text(label,
+              style:
+                  const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+          const SizedBox(height: 8),
           TextField(
             controller: TextEditingController(text: value),
-            decoration: InputDecoration(hintText: 'e.g. ${label.split(' ').last}', border: UnderlineInputBorder()),
-            style: TextStyle(fontSize: 16),
+            enabled: false,
+            decoration: InputDecoration(
+                hintText: 'e.g. ${label.split(' ').last}',
+                disabledBorder: const UnderlineInputBorder(),
+                border: const UnderlineInputBorder()),
+            style: const TextStyle(fontSize: 16, color: Colors.black),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildStatusDropdown(String currentValue, List<String> options, BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Expanded(
-          child: DropdownButton<String>(
-            isExpanded: true,
-            value: currentValue,
-            onChanged: (String? newValue) {
-              // Implement state management logic
-            },
-            items: options.map<DropdownMenuItem<String>>((String value) {
-              return DropdownMenuItem<String>(
-                value: value,
-                child: Text(value),
-              );
-            }).toList(),
-          ),
-        ),
-        Icon(Icons.sports_soccer), // Replace with your sports icon asset
-      ],
-    );
-  }
-
   Widget _buildRating(int rating) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: List.generate(5, (index) {
-        return Icon(index < rating ? Icons.star : Icons.star_border, color: index < rating ? Colors.amber : Colors.grey, size: 24);
-      }),
-    );
+    return Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+      const Text("Rating",
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: List.generate(5, (index) {
+          return Icon(index < rating ? Icons.star : Icons.star_border,
+              color: index < rating ? Colors.amber : Colors.grey, size: 24);
+        }),
+      )
+    ]);
   }
 }

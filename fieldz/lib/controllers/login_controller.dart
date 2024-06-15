@@ -34,16 +34,16 @@ class LoginController extends GetxController {
         await prefs.setString('userID', userData['id']);
         switch (userData['user_type']) {
           case 'user':
-            Get.to(() => UserLandingPage());
+            Get.offAll(() => UserLandingPage());
             break;
           case 'admin':
-            Get.to(() => AdminLandingPage());
+            Get.offAll(() => const AdminLandingPage());
             break;
           case 'supplier':
-            Get.to(() => SupplierDashboardView());
+            Get.offAll(() => SupplierDashboardView());
             break;
           case 'coach':
-            Get.to(() => const LandingPage());
+            Get.offAll(() => const LandingPage());
             break;
           default:
             break;

@@ -31,12 +31,14 @@ class SupplierYourFieldsController extends GetxController {
             doc.id,
             data['name'],
             data['location'],
+            data['phoneNumber'],
             (data['price']).toInt(),
             data['rating'],
             data['imageURL'],
-            data['availability']);
+            data['availability'],
+            data['sport']);
         field.status = data['status'];
-        if (field.status == 'confirmed') {
+        if (field.status == 'verified') {
           activeFields.add(field);
         } else {
           pendingFields.add(field);
@@ -44,9 +46,5 @@ class SupplierYourFieldsController extends GetxController {
       }
     });
     isLoaded.value = true;
-  }
-
-  String formatTwoDigits(int number) {
-    return number.toString().padLeft(2, '0');
   }
 }

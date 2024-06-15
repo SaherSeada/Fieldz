@@ -2,9 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fieldz/models/coach.dart';
 import 'package:get/get.dart';
 
-class CoachesController extends GetxController {
-  final RxList coaches = [].obs;
+class AdminCoachesController extends GetxController {
   RxBool isLoaded = false.obs;
+  RxList activeCoaches = [].obs;
+  RxList pendingCoaches = [].obs;
+  RxList rejectedCoaches = [].obs;
 
   @override
   void onInit() async {
@@ -14,8 +16,10 @@ class CoachesController extends GetxController {
 
   getCoaches() async {
     isLoaded.value = false;
+    activeCoaches.clear();
+    pendingCoaches.clear();
+    rejectedCoaches.clear();
     await FirebaseFirestore.instance.collection("coaches").get().then((event) {
-      coaches.clear();
       for (var doc in event.docs) {
         var data = doc.data();
         var coach = Coach(
@@ -24,11 +28,18 @@ class CoachesController extends GetxController {
             data['email'],
             data['username'],
             data['phoneNumber'],
-            data['price'].toDouble(),
+            (data['price']).toInt(),
             data['rating'],
             data['avatarURL'],
             data['sport']);
-        coaches.add(coach);
+        coach.status = data['status'];
+        if (coach.status == 'verified') {
+          activeCoaches.add(coach);
+        } else if (coach.status == 'pending') {
+          pendingCoaches.add(coach);
+        } else {
+          rejectedCoaches.add(coach);
+        }
       }
     });
     isLoaded.value = true;

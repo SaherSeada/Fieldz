@@ -16,7 +16,11 @@ class FieldsController extends GetxController {
     for (int i = 0; i < 7; i++) {
       DateTime currentDate = DateTime.now().add(Duration(days: i));
       String dayName = DateFormat('EEEE').format(currentDate);
-      days.add({"dayName": dayName, "date": "${currentDate.year}-${formatTwoDigits(currentDate.month)}-${formatTwoDigits(currentDate.day)}"});
+      days.add({
+        "dayName": dayName,
+        "date":
+            "${currentDate.year}-${formatTwoDigits(currentDate.month)}-${formatTwoDigits(currentDate.day)}"
+      });
     }
     await getFields();
     super.onInit();
@@ -28,7 +32,16 @@ class FieldsController extends GetxController {
       allFields.clear();
       for (var doc in event.docs) {
         var data = doc.data();
-        var field = Field(doc.id, data['name'], data['location'], data['price'], data['rating'], data['imageURL'], data['availability']);
+        var field = Field(
+            doc.id,
+            data['name'],
+            data['location'],
+            data['phoneNumber'],
+            data['price'],
+            data['rating'],
+            data['imageURL'],
+            data['availability'],
+            data['sport']);
         allFields.add(field);
       }
     });
