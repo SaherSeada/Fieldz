@@ -101,6 +101,20 @@ class SupplierAddFieldView extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 20),
+                    // Phone Number Text Field
+                    TextFormField(
+                      controller: controller.phoneNumberController,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "You have to provide a phone number";
+                        }
+                        return null;
+                      },
+                      decoration: const InputDecoration(
+                        labelText: 'Field Phone Number',
+                      ),
+                    ),
+                    const SizedBox(height: 20),
                     // Minimum Capacity Text Field
                     TextFormField(
                       controller: controller.minCapacityController,

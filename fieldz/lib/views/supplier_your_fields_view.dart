@@ -1,7 +1,5 @@
 import 'package:fieldz/controllers/supplier_your_fields_controller.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 class SupplierYourFieldsView extends StatelessWidget {
@@ -17,36 +15,38 @@ class SupplierYourFieldsView extends StatelessWidget {
           title: const Text('Your Fields'),
         ),
         body: SingleChildScrollView(
-            child:
+            child: Obx(() =>
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          const Padding(
-              padding: EdgeInsets.all(10),
-              child: Text("Active Fields",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold))),
-          SizedBox(
-              height: controller.activeFields.length * 175,
-              child: ListView.builder(
-                itemCount: controller.activeFields.length,
-                itemBuilder: (context, index) {
-                  var field = controller.activeFields[index];
-                  return fieldWidget(field);
-                },
-              )),
-          // const Divider(color: Colors.black),
-          const Padding(
-              padding: EdgeInsets.all(10),
-              child: Text("Pending Fields",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold))),
-          SizedBox(
-              height: controller.activeFields.length * 175,
-              child: ListView.builder(
-                itemCount: controller.pendingFields.length,
-                itemBuilder: (context, index) {
-                  var field = controller.pendingFields[index];
-                  return fieldWidget(field);
-                },
-              )),
-        ])));
+                  const Padding(
+                      padding: EdgeInsets.all(10),
+                      child: Text("Active Fields",
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold))),
+                  ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: controller.activeFields.length,
+                    itemBuilder: (context, index) {
+                      var field = controller.activeFields[index];
+                      return fieldWidget(field);
+                    },
+                  ),
+                  const SizedBox(height: 20),
+                  const Padding(
+                      padding: EdgeInsets.all(10),
+                      child: Text("Pending Fields",
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold))),
+                  ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: controller.pendingFields.length,
+                    itemBuilder: (context, index) {
+                      var field = controller.pendingFields[index];
+                      return fieldWidget(field);
+                    },
+                  ),
+                ]))));
   }
 
   fieldWidget(field) {
@@ -72,15 +72,15 @@ class SupplierYourFieldsView extends StatelessWidget {
           ),
         ),
         subtitle: Text(
-          field.status == 'confirmed' ? 'Confirmed' : 'Pending',
+          field.status == 'verified' ? 'Verified' : 'Pending',
           style: TextStyle(
-            color: field.status == 'confirmed' ? Colors.green : Colors.orange,
+            color: field.status == 'verified' ? Colors.green : Colors.orange,
             fontWeight: FontWeight.bold,
           ),
         ),
         trailing: Icon(
-          field.status == 'confirmed' ? Icons.check_circle : Icons.info,
-          color: field.status == 'confirmed' ? Colors.green : Colors.orange,
+          field.status == 'verified' ? Icons.check_circle : Icons.info,
+          color: field.status == 'verified' ? Colors.green : Colors.orange,
         ),
         onTap: () {
           // Add functionality to navigate to field details screen
