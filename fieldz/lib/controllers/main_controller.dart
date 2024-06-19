@@ -11,7 +11,6 @@ class MainController extends GetxController {
 
   @override
   void onInit() async {
-    super.onInit();
     // Listen for changes in authentication state
     user.value = FirebaseAuth.instance.currentUser;
     if (user.value != null) {
@@ -27,5 +26,6 @@ class MainController extends GetxController {
       });
       userType.value = userData['user_type'];
     }
+    super.onInit();
   }
 }
