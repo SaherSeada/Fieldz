@@ -43,7 +43,7 @@ class LoginController extends GetxController {
             Get.offAll(() => SupplierDashboardView());
             break;
           case 'coach':
-            Get.offAll(() => const LandingPage());
+            Get.offAll(() => CoachLandingPage());
             break;
           default:
             break;

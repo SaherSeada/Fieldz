@@ -1,248 +1,169 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fieldz/controllers/coach_landing_page_controller.dart';
+import 'package:fieldz/views/coach_sessions_page.dart';
+import 'package:fieldz/views/coach_subscription_plan_screen.dart';
+import 'package:fieldz/views/login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
+import 'package:get/get.dart';
 import 'coach_activity_screen.dart';
-import 'coach_programs_screen.dart';
 
+class CoachLandingPage extends StatelessWidget {
+  CoachLandingPage({super.key});
 
-
-class LandingPage extends StatefulWidget {
-  const LandingPage({super.key});
+  final CoachLandingPageController controller =
+      Get.put(CoachLandingPageController());
 
   @override
-  State<LandingPage> createState() => _LandingPageState();
-
-}
-
-class _LandingPageState extends State<LandingPage> {
-  String username = ''; // Variable to hold the username
-  String email = ''; // Variable to hold the email
-  @override
-  void initState() {
-    super.initState();
-    fetchUsername(); // Fetch the username when the widget initializes
-  }
-
-  Future<void> fetchUsername() async {
-    FirebaseAuth auth = FirebaseAuth.instance;
-    User? user = auth.currentUser;
-
-    if (user != null) {
-      // User is signed in, get the username from Firestore
-      try {
-        DocumentSnapshot userSnapshot =
-        await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
-
-        if (userSnapshot.exists) {
-          // If the user document exists, get the username
-          setState(() {
-            username = userSnapshot['username'];
-            email = userSnapshot['email'];
-          });
-        }
-      } catch (e) {
-        print('Error fetching username: $e');
-      }
-    }
-  }
   Widget build(BuildContext context) {
     return Scaffold(
-
-
       appBar: AppBar(
-
         actions: [
-          IconButton(onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => Coach_Activity()),
-            );
-          }, icon: Icon(Icons.notifications))
-        ] ,
+          IconButton(
+              onPressed: () {
+                Get.to(() => CoachActivityScreen());
+              },
+              icon: const Icon(Icons.notifications))
+        ],
         centerTitle: true,
-        title: Text(username),
+        title: Obx(() => Text(controller.username.value)),
       ),
       drawer: Drawer(
         child: Container(
-          padding: EdgeInsets.all(15),
-          child: ListView(children: [
-            Row(children: [
-              Container(
-                width: 60,
-                height:60,
-                child: CircleAvatar(
-                  backgroundImage: AssetImage("images/Profile.png"), // Add your profile image
-                ),
+          padding: const EdgeInsets.all(15),
+          child: ListView(
+            children: [
+              Obx(() => Row(
+                    children: [
+                      const SizedBox(
+                        width: 60,
+                        height: 60,
+                        child: CircleAvatar(
+                          backgroundImage: AssetImage(
+                              "images/Profile.png"), // Add your profile image
+                        ),
+                      ),
+                      Expanded(
+                          child: ListTile(
+                        title: Text(controller.username.value),
+                        subtitle: Text(controller.email.value),
+                      ))
+                    ],
+                  )),
+              ListTile(
+                title: const Text("Profile"),
+                leading: const Icon(Icons.person),
+                onTap: () {},
               ),
-              Expanded(child: ListTile(
-                title: Text(username),
-                subtitle: Text(email),
-              ))
+              ListTile(
+                title: const Text("History"),
+                leading: const Icon(Icons.help),
+                onTap: () {},
+              ),
+              ListTile(
+                title: const Text("Feedback"),
+                leading: const Icon(Icons.check),
+                onTap: () {},
+              ),
+              ListTile(
+                title: const Text("Sign Out"),
+                leading: const Icon(Icons.exit_to_app_rounded),
+                onTap: () async {
+                  await FirebaseAuth.instance.signOut();
+                  Get.offAll(() => Login());
+                },
+              ),
             ],
-            ),
-            ListTile(
-              title: Text("Homepage"),
-              leading:Icon(Icons.home),
-              onTap: (){
-                Navigator.of(context).pushNamedAndRemoveUntil("homepage", (route) => false);
-              },
-            ),
-            ListTile(
-              title: Text("Payment"),
-              leading:Icon(Icons.account_balance),
-              onTap: (){},
-            ),
-            ListTile(
-              title: Text("History"),
-              leading:Icon(Icons.help),
-              onTap: (){
-                Navigator.of(context).pushNamedAndRemoveUntil("ridehistory", (route) => false);
-
-              },
-            ),
-            ListTile(
-              title: Text("Feedback"),
-              leading:Icon(Icons.check),
-              onTap: (){
-                Navigator.of(context).pushNamedAndRemoveUntil("ridestatus", (route) => false);
-
-              },
-            ),
-            ListTile(
-              title: Text("Sign Out"),
-              leading:Icon(Icons.exit_to_app_rounded),
-              onTap: ()async{
-                await FirebaseAuth.instance.signOut();
-                Navigator.of(context).pushNamedAndRemoveUntil("login", (route) => false);
-              },
-            ),
-          ],
           ),
         ),
-      ), // Set the app bar to null to remove it
+      ),
       body: Column(
-       // mainAxisAlignment: MainAxisAlignment.center,
+        // mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SizedBox(
-            height: 80,
+          const SizedBox(
+            height: 60,
           ),
           Container(
             // margin: EdgeInsets.all(5),
-              height: 120,
-              width: 200,
-              decoration: BoxDecoration(color: Colors.white),
-              child: CircleAvatar(
-                backgroundImage: AssetImage("images/coach.png"), // Add your profile image
-              ),),
-          SizedBox(
+            height: 180,
+            width: 300,
+            decoration: const BoxDecoration(color: Colors.white),
+            child: const CircleAvatar(
+              backgroundImage:
+                  AssetImage("images/coach.png"), // Add your profile image
+            ),
+          ),
+          const SizedBox(
             height: 30,
           ),
-          SizedBox(height: 15.0),
-          Text(
-            'select an option',
+          const SizedBox(height: 15.0),
+          const Text(
+            'Select an Option',
             style: TextStyle(fontSize: 30.0, color: Colors.black),
           ),
-          SizedBox(height: 30.0),
-          // Cards for destination selection
-          NavigationBar(),
-          SizedBox(height: 80.0),
+          const SizedBox(height: 30.0),
+          const NavigationBar(),
+          const SizedBox(height: 80.0),
           Container(
-            padding: EdgeInsets.all(16.0),
-            child: Text(
-              'In fieldz lead with integrity',
+            padding: const EdgeInsets.all(16.0),
+            child: const Text(
+              'Fieldz, Lead With Integrity',
               style: TextStyle(
-                fontSize: 17.0,
-                color: Colors.amber, // Choose your desired color
-              ),
+                  fontSize: 17.0,
+                  color: Colors.amber,
+                  fontWeight: FontWeight.bold // Choose your desired color
+                  ),
             ),
           ),
         ],
-
-      ),
-    );
-  }
-}
-
-class DestinationCard extends StatelessWidget {
-  final String text;
-  final VoidCallback onPressed;
-
-  const DestinationCard({
-    Key? key,
-    required this.text,
-    required this.onPressed,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      elevation: 5.0,
-      color: Colors.grey, // Set the background color to grey
-      child: InkWell(
-        onTap: onPressed,
-        child: Container(
-          padding: EdgeInsets.all(16.0),
-          child: Text(
-            text,
-            style: TextStyle(fontSize: 18.0),
-          ),
-        ),
       ),
     );
   }
 }
 
 class NavigationBar extends StatelessWidget {
+  const NavigationBar({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(35), // Adjust the value as needed
-          color: Colors.blueGrey,
-        ),
-        child: Container(
-          height: 50,
-          width: 380, // Occupy the full width of the screen
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              MaterialButton(onPressed: (){
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Coach_Programs()),
-                );
-              },
-                child: Text("Programs"),
+    return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        child: Center(
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius:
+                  BorderRadius.circular(35), // Adjust the value as needed
+              color: Colors.blueGrey,
+            ),
+            child: SizedBox(
+              height: 50,
+              width: 380, // Occupy the full width of the screen
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  MaterialButton(
+                    onPressed: () {
+                      Get.to(() => CoachSessionsPage());
+                    },
+                    child: const Text("Quick Sessions",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 16)),
+                  ),
+                  Container(
+                    width: 5,
+                    color: Colors.amber,
+                  ),
+                  MaterialButton(
+                    onPressed: () {
+                      Get.to(() => CoachSubscriptionPlanPage());
+                    },
+                    child: const Text("Subscription Plans",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 16)),
+                  ),
+                ],
               ),
-              Container(
-                width: 5,
-                color: Colors.amber,
-              ),
-              MaterialButton(onPressed: (){
-              },
-
-                child: Text("Profile"),
-              ),
-              Container(
-                width: 5,
-                color: Colors.amber,
-              ),
-              MaterialButton(onPressed: (){
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Coach_Activity()),
-                );
-              },
-
-                child: Text("Activity"),
-              ),
-
-            ],
+            ),
           ),
-        ),
-      ),
-    );
+        ));
   }
 }

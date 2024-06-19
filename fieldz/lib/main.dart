@@ -44,23 +44,22 @@ class MainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      if (mainController.user.value == null) {
-        // User is not signed in, navigate to login page
-        return Login();
-      } else {
+      if (mainController.user.value != null) {
         // User is signed in, navigate to home page
         switch (mainController.userType.value) {
           case 'user':
             return UserLandingPage();
           case 'admin':
-            return AdminLandingPage();
+            return const AdminLandingPage();
           case 'supplier':
             return const SupplierLogin();
           case 'coach':
-            return const LandingPage();
+            return CoachLandingPage();
           default:
             return Login();
         }
+      } else {
+        return Login();
       }
     });
   }
