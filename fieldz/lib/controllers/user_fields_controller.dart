@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fieldz/models/field.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
@@ -10,6 +11,8 @@ class FieldsController extends GetxController {
   RxInt selectedFilterIndex = 0.obs;
 
   RxBool isLoaded = false.obs;
+
+  final TextEditingController searchController = TextEditingController();
 
   @override
   void onInit() async {
@@ -37,7 +40,7 @@ class FieldsController extends GetxController {
             data['name'],
             data['location'],
             data['phoneNumber'],
-            data['price'],
+            data['price'].toInt(),
             data['rating'],
             data['imageURL'],
             data['availability'],

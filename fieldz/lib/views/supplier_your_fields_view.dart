@@ -1,5 +1,6 @@
 import 'package:fieldz/controllers/supplier_your_fields_controller.dart';
 import 'package:fieldz/models/field.dart';
+import 'package:fieldz/views/supplier_add_field_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -15,6 +16,12 @@ class SupplierYourFieldsView extends StatelessWidget {
         appBar: AppBar(
           title: const Text('Your Fields'),
         ),
+        floatingActionButton: ElevatedButton(
+          child: const Text("Add A Field"),
+          onPressed: () {
+            Get.to(() => SupplierAddFieldView());
+          },
+        ),
         body: SingleChildScrollView(
             child: Obx(() =>
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -23,30 +30,63 @@ class SupplierYourFieldsView extends StatelessWidget {
                       child: Text("Active Fields",
                           style: TextStyle(
                               fontSize: 20, fontWeight: FontWeight.bold))),
-                  ListView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: controller.activeFields.length,
-                    itemBuilder: (context, index) {
-                      var field = controller.activeFields[index];
-                      return fieldWidget(field);
-                    },
-                  ),
+                  controller.activeFields.isNotEmpty
+                      ? ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: controller.activeFields.length,
+                          itemBuilder: (context, index) {
+                            var field = controller.activeFields[index];
+                            return fieldWidget(field);
+                          },
+                        )
+                      : const Padding(
+                          padding: EdgeInsets.symmetric(vertical: 18),
+                          child: Center(
+                              child: Text("No Active Fields",
+                                  style: TextStyle(fontSize: 16)))),
                   const SizedBox(height: 20),
                   const Padding(
                       padding: EdgeInsets.all(10),
                       child: Text("Pending Fields",
                           style: TextStyle(
                               fontSize: 20, fontWeight: FontWeight.bold))),
-                  ListView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: controller.pendingFields.length,
-                    itemBuilder: (context, index) {
-                      var field = controller.pendingFields[index];
-                      return fieldWidget(field);
-                    },
-                  ),
+                  controller.pendingFields.isNotEmpty
+                      ? ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: controller.pendingFields.length,
+                          itemBuilder: (context, index) {
+                            var field = controller.pendingFields[index];
+                            return fieldWidget(field);
+                          },
+                        )
+                      : const Padding(
+                          padding: EdgeInsets.symmetric(vertical: 18),
+                          child: Center(
+                              child: Text("No Pending Fields",
+                                  style: TextStyle(fontSize: 16)))),
+                  const SizedBox(height: 20),
+                  const Padding(
+                      padding: EdgeInsets.all(10),
+                      child: Text("Rejected Fields",
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold))),
+                  controller.rejectedFields.isNotEmpty
+                      ? ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: controller.rejectedFields.length,
+                          itemBuilder: (context, index) {
+                            var field = controller.rejectedFields[index];
+                            return fieldWidget(field);
+                          },
+                        )
+                      : const Padding(
+                          padding: EdgeInsets.symmetric(vertical: 18),
+                          child: Center(
+                              child: Text("No Rejected Fields",
+                                  style: TextStyle(fontSize: 16)))),
                 ]))));
   }
 

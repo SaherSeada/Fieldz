@@ -25,6 +25,8 @@ class MainController extends GetxController {
         userData = doc.data() as Map<String, dynamic>;
       });
       userType.value = userData['user_type'];
+      await prefs.setString('username', userData['username']);
+      await prefs.setString('phoneNumber', userData['phoneNumber']);
     }
     super.onInit();
   }

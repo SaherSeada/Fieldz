@@ -1,8 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fieldz/controllers/user_fields_controller.dart';
+import 'package:fieldz/views/user_bookings_screen.dart';
+import 'package:fieldz/views/widgets/dialog.dart';
 import 'package:fieldz/views/widgets/snackbar.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class FieldBookingController extends GetxController {
   Map? arguments;
@@ -67,21 +70,43 @@ class FieldBookingController extends GetxController {
   }
 
   confirmBooking() async {
-    isLoaded.value = false;
-    for (int i = 0; i < selectedHours.length; i++) {
-      if (selectedHours[i].value) {
-        hoursAvailability[i] = false;
+    try {
+      isLoaded.value = false;
+      for (int i = 0; i < selectedHours.length; i++) {
+        if (selectedHours[i].value) {
+          hoursAvailability[i] = false;
+        }
       }
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String username = prefs.getString('username') ?? "";
+      String phoneNumber = prefs.getString('phoneNumber') ?? "";
+      String userID = prefs.getString('userID') ?? "";
+      List<bool> boolSelectedHours =
+          selectedHours.map((rxBool) => rxBool.value).toList();
+      await FirebaseFirestore.instance.collection('fieldBookings').add({
+        'bookerName': username,
+        'phoneNumber': phoneNumber,
+        'userID': userID,
+        'price': numberOfSelectedHours.value * price!,
+        'details': bookingDetails,
+        'date': selectedDate,
+        'hoursBooked': boolSelectedHours,
+        'fieldID': arguments?['id'],
+        'fieldName': title,
+      });
+      await FirebaseFirestore.instance
+          .collection('fields')
+          .doc(arguments?['id'])
+          .update({
+        'availability.$selectedDate.hours_availability': hoursAvailability
+      });
+      fieldsController.getFields();
+      isLoaded.value = true;
+      Get.off(UserBookingsScreen());
+      snackBar("Booking Completed Successfully");
+      return true;
+    } catch (e) {
+      messageDialog("Something Went Wrong!", "Please try again.");
     }
-    await FirebaseFirestore.instance
-        .collection('fields')
-        .doc(arguments?['id'])
-        .update({
-      'availability.$selectedDate.hours_availability': hoursAvailability
-    });
-    fieldsController.getFields();
-    isLoaded.value = true;
-    Get.back();
-    snackBar("Booking Completed Successfully");
   }
 }

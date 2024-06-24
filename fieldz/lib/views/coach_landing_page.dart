@@ -17,13 +17,6 @@ class CoachLandingPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        actions: [
-          IconButton(
-              onPressed: () {
-                Get.to(() => CoachActivityScreen());
-              },
-              icon: const Icon(Icons.notifications))
-        ],
         centerTitle: true,
         title: Obx(() => Text(controller.username.value)),
       ),
@@ -34,12 +27,12 @@ class CoachLandingPage extends StatelessWidget {
             children: [
               Obx(() => Row(
                     children: [
-                      const SizedBox(
+                      SizedBox(
                         width: 60,
                         height: 60,
                         child: CircleAvatar(
-                          backgroundImage: AssetImage(
-                              "images/Profile.png"), // Add your profile image
+                          backgroundImage:
+                              NetworkImage(controller.avatarURL.value),
                         ),
                       ),
                       Expanded(
@@ -82,16 +75,16 @@ class CoachLandingPage extends StatelessWidget {
           const SizedBox(
             height: 60,
           ),
-          Container(
-            // margin: EdgeInsets.all(5),
-            height: 180,
-            width: 300,
-            decoration: const BoxDecoration(color: Colors.white),
-            child: const CircleAvatar(
-              backgroundImage:
-                  AssetImage("images/coach.png"), // Add your profile image
-            ),
-          ),
+          Obx(() => Container(
+                // margin: EdgeInsets.all(5),
+                height: 180,
+                width: 300,
+                decoration: const BoxDecoration(color: Colors.white),
+                child: CircleAvatar(
+                  backgroundImage: NetworkImage(
+                      controller.avatarURL.value), // Add your profile image
+                ),
+              )),
           const SizedBox(
             height: 30,
           ),
@@ -128,7 +121,8 @@ class NavigationBar extends StatelessWidget {
     return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10),
         child: Center(
-          child: Container(
+            child: Column(children: [
+          Container(
             decoration: BoxDecoration(
               borderRadius:
                   BorderRadius.circular(35), // Adjust the value as needed
@@ -164,6 +158,27 @@ class NavigationBar extends StatelessWidget {
               ),
             ),
           ),
-        ));
+          const SizedBox(height: 30),
+          Container(
+              decoration: BoxDecoration(
+                borderRadius:
+                    BorderRadius.circular(35), // Adjust the value as needed
+                color: Colors.orangeAccent,
+              ),
+              width: 250,
+              child: MaterialButton(
+                  onPressed: () {
+                    Get.to(() => CoachActivityScreen());
+                  },
+                  child: const Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.notifications),
+                        SizedBox(width: 10),
+                        Text("Your Activities",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 16)),
+                      ])))
+        ])));
   }
 }

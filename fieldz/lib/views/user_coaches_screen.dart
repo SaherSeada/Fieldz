@@ -1,5 +1,6 @@
 import 'package:fieldz/controllers/user_coaches_controller.dart';
-import 'package:fieldz/controllers/user_drawer_controller.dart';
+import 'package:fieldz/models/coach.dart';
+import 'package:fieldz/views/user_coach_details_screen.dart';
 import 'package:fieldz/views/widgets/user_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -9,136 +10,150 @@ class CoachesScreen extends StatelessWidget {
 
   final CoachesController controller = Get.put(CoachesController());
 
-  final UserDrawerController drawerController = UserDrawerController();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        key: drawerController.scaffoldKey,
         appBar: AppBar(
             title: const Text("Coaches",
                 style: TextStyle(
                     color: Colors.white, fontWeight: FontWeight.bold)),
             toolbarHeight: 60,
             centerTitle: true,
-            leading: IconButton(
-              icon: const Icon(Icons.menu),
-              onPressed: () {
-                drawerController.openDrawer(); // This line opens the drawer
-              },
-            ),
-            backgroundColor: Colors.blueAccent,
-            automaticallyImplyLeading: false),
+            backgroundColor: Colors.blueAccent),
         drawer: userDrawer(),
-        body: Obx(() => controller.isLoaded.value ? RefreshIndicator(
-            onRefresh: () async {
-              await controller.getCoaches();
-            },
-            child: Column(children: [
-              Expanded(
-                child: ListView.builder(
-                  itemCount: controller.coaches.length,
-                  itemBuilder: (context, index) {
-                    return SizedBox(
-                        height: 190,
-                        child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 7, vertical: 4),
+        body: Obx(() => controller.isLoaded.value
+            ? RefreshIndicator(
+                onRefresh: () async {
+                  await controller.getCoaches();
+                },
+                child: Column(children: [
+                  Padding(
+                      padding: const EdgeInsets.fromLTRB(7, 10, 7, 3),
+                      child: SizedBox(
+                          width: Get.width - 25,
+                          child: Row(children: [
+                            Expanded(
+                                child: TextField(
+                                    controller: controller.searchController,
+                                    onChanged: (value) {},
+                                    decoration: InputDecoration(
+                                      labelText: 'Search',
+                                      labelStyle: const TextStyle(fontSize: 18),
+                                      prefixIcon: const Icon(Icons.search),
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                    ))),
+                            const SizedBox(width: 10),
+                            SizedBox(
+                                width: 100,
+                                height: 50,
+                                child: ElevatedButton(
+                                  onPressed: () {},
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.green,
+                                    textStyle: const TextStyle(
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  child: const Text(
+                                    'Filter by Sport',
+                                    textAlign: TextAlign.center,
+                                  ),
+                                )),
+                          ]))),
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: controller.coaches.length,
+                      itemBuilder: (context, index) {
+                        Coach coach = controller.coaches[index];
+                        return GestureDetector(
+                            onTap: () {
+                              Get.to(() => UserCoachDetailsScreen(),
+                                  arguments: {'coach': coach});
+                            },
                             child: Card(
-                                child: Padding(
-                              padding: const EdgeInsets.all(8),
+                              margin: const EdgeInsets.all(10),
+                              elevation: 5,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15)),
                               child: Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(5, 10, 5, 0),
-                                  child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
+                                padding: const EdgeInsets.all(15.0),
+                                child: Row(
+                                  children: [
+                                    CircleAvatar(
+                                      backgroundImage:
+                                          NetworkImage(coach.avatarUrl),
+                                      radius: 40,
+                                    ),
+                                    const SizedBox(width: 20),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            coach.username,
+                                            style: const TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          const SizedBox(height: 5),
+                                          Text(
+                                            '${coach.sport[0].toUpperCase() + coach.sport.substring(1)} Coach',
+                                            style: TextStyle(
+                                              color: Colors.grey[600],
+                                              fontSize: 14,
+                                            ),
+                                          ),
+                                          const SizedBox(height: 5),
+                                          Row(
                                             children: [
-                                              Column(children: [
-                                                Text(
-                                                  controller
-                                                      .coaches[index].name,
-                                                  style: const TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold),
+                                              Icon(Icons.star,
+                                                  color: Colors.yellow[700],
+                                                  size: 18),
+                                              const SizedBox(width: 5),
+                                              Text(
+                                                coach.rating.toString(),
+                                                style: const TextStyle(
+                                                  fontSize: 14,
                                                 ),
-                                                Padding(
-                                                    padding: const EdgeInsets
-                                                        .fromLTRB(5, 12, 5, 0),
-                                                    child: Column(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          Text(
-                                                            "${controller.coaches[index].price} EGP/session",
-                                                            style: const TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                color: Colors
-                                                                    .blueAccent),
-                                                          ),
-                                                          const SizedBox(
-                                                              height: 10),
-                                                          Row(
-                                                            children:
-                                                                List.generate(5,
-                                                                    (i) {
-                                                              if (i <
-                                                                  controller
-                                                                      .coaches[
-                                                                          index]
-                                                                      .rating) {
-                                                                return const Icon(
-                                                                    Icons.star,
-                                                                    size: 16,
-                                                                    color: Colors
-                                                                        .yellow);
-                                                              } else {
-                                                                return const Icon(
-                                                                    Icons
-                                                                        .star_border,
-                                                                    size: 16);
-                                                              }
-                                                            }),
-                                                          ),
-                                                        ]))
-                                              ]),
-                                              CircleAvatar(
-                                                radius: 35.0,
-                                                backgroundImage: NetworkImage(
-                                                    controller.coaches[index]
-                                                        .avatarUrl),
-                                                backgroundColor:
-                                                    Colors.transparent,
-                                              )
-                                            ]),
-                                        const SizedBox(height: 15),
-                                        Center(
-                                            child: ElevatedButton(
-                                          onPressed: () {},
-                                          style: ButtonStyle(
-                                              backgroundColor:
-                                                  MaterialStateProperty.all<
-                                                      Color>(Colors.blueAccent),
-                                              minimumSize: MaterialStateProperty
-                                                  .all<Size>(
-                                                      const Size(30, 30))),
-                                          child: const Text("Book",
-                                              style: TextStyle(
-                                                  fontSize: 12,
-                                                  color: Colors.white)),
-                                        ))
-                                      ])),
-                            ))));
-                  },
-                ),
-              )
-            ])) : const Center(child: CircularProgressIndicator())));
+                                              ),
+                                            ],
+                                          ),
+                                          const SizedBox(height: 10),
+                                          Row(
+                                            children: [
+                                              Text(
+                                                '${coach.availableSessions} Quick Session${coach.availableSessions! > 1 ? "s" : ""}',
+                                                style: const TextStyle(
+                                                  fontSize: 14,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          const SizedBox(height: 5),
+                                          Row(
+                                            children: [
+                                              Text(
+                                                '${coach.availablePlans} Subscription Plan${coach.availablePlans! > 1 ? "s" : ""}',
+                                                style: const TextStyle(
+                                                  fontSize: 14,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ));
+                      },
+                    ),
+                  )
+                ]))
+            : const Center(child: CircularProgressIndicator())));
   }
 }
