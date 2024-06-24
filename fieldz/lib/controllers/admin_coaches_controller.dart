@@ -24,11 +24,9 @@ class AdminCoachesController extends GetxController {
         var data = doc.data();
         var coach = Coach(
             doc.id,
-            data['name'],
             data['email'],
             data['username'],
             data['phoneNumber'],
-            (data['price']).toInt(),
             data['rating'],
             data['avatarURL'],
             data['sport']);

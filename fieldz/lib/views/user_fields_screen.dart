@@ -1,5 +1,4 @@
 import 'package:fieldz/controllers/user_fields_controller.dart';
-import 'package:fieldz/controllers/user_drawer_controller.dart';
 import 'package:fieldz/views/user_field_booking_screen.dart';
 import 'package:fieldz/views/widgets/user_drawer.dart';
 import 'package:flutter/material.dart';
@@ -10,26 +9,17 @@ class FieldsScreen extends StatelessWidget {
 
   final FieldsController controller = Get.put(FieldsController());
 
-  final UserDrawerController drawerController = UserDrawerController();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        key: drawerController.scaffoldKey,
         appBar: AppBar(
-            title: const Text("Fields",
-                style: TextStyle(
-                    color: Colors.white, fontWeight: FontWeight.bold)),
-            centerTitle: true,
-            leading: IconButton(
-              icon: const Icon(Icons.menu),
-              onPressed: () {
-                drawerController.openDrawer(); // This line opens the drawer
-              },
-            ),
-            toolbarHeight: 60,
-            backgroundColor: Colors.blueAccent,
-            automaticallyImplyLeading: false),
+          title: const Text("Fields",
+              style:
+                  TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+          centerTitle: true,
+          toolbarHeight: 60,
+          backgroundColor: Colors.blueAccent,
+        ),
         drawer: userDrawer(),
         body: Obx(() => controller.isLoaded.value
             ? RefreshIndicator(
@@ -38,6 +28,42 @@ class FieldsScreen extends StatelessWidget {
                 },
                 child: Column(
                   children: [
+                    Padding(
+                        padding: const EdgeInsets.fromLTRB(7, 10, 7, 0),
+                        child: SizedBox(
+                            width: Get.width - 25,
+                            child: Row(children: [
+                              Expanded(
+                                  child: TextField(
+                                      controller: controller.searchController,
+                                      onChanged: (value) {},
+                                      decoration: InputDecoration(
+                                        labelText: 'Search',
+                                        labelStyle:
+                                            const TextStyle(fontSize: 18),
+                                        prefixIcon: const Icon(Icons.search),
+                                        border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                      ))),
+                              const SizedBox(width: 10),
+                              SizedBox(
+                                  width: 100,
+                                  height: 50,
+                                  child: ElevatedButton(
+                                    onPressed: () {},
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.green,
+                                      textStyle: const TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    child: const Text(
+                                      'Filter by Sport',
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  )),
+                            ]))),
                     Container(
                       height: 55.0,
                       padding: const EdgeInsets.fromLTRB(0, 12, 0, 7),
@@ -206,8 +232,14 @@ class FieldsScreen extends StatelessWidget {
                                                                       .fields[
                                                                           index]
                                                                       .availability,
-                                                              "price": controller.fields[index].price,
-                                                              "id": controller.fields[index].id,
+                                                              "price":
+                                                                  controller
+                                                                      .fields[
+                                                                          index]
+                                                                      .price,
+                                                              "id": controller
+                                                                  .fields[index]
+                                                                  .id,
                                                               "selected_day": controller
                                                                       .days[
                                                                   controller

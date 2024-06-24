@@ -18,11 +18,19 @@ class CoachActivityController extends GetxController {
     super.onInit();
   }
 
+  refreshData() async {
+    isLoaded.value = false;
+    await getSessions();
+    await getPrograms();
+    isLoaded.value = true;
+  }
+
   getSessions() async {
     sessions.clear();
     try {
       await FirebaseFirestore.instance
           .collection("sessions")
+          .where('status', isEqualTo: 'active')
           .get()
           .then((event) {
         for (var doc in event.docs) {
@@ -63,6 +71,7 @@ class CoachActivityController extends GetxController {
     try {
       await FirebaseFirestore.instance
           .collection("programs")
+          .where('status', isEqualTo: 'active')
           .get()
           .then((event) {
         for (var doc in event.docs) {

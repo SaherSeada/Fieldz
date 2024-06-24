@@ -1,4 +1,5 @@
 import 'package:fieldz/views/login.dart';
+import 'package:fieldz/views/user_bookings_screen.dart';
 import 'package:fieldz/views/user_profile_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -28,6 +29,13 @@ userDrawer() {
           leading: const Icon(Icons.table_view_outlined),
           onTap: () {
             Get.to(() => UserProfileScreen());
+          },
+        ),
+        ListTile(
+          title: const Text('My Bookings'),
+          leading: const Icon(Icons.book_online),
+          onTap: () {
+            Get.to(() => UserBookingsScreen());
           },
         ),
         ListTile(

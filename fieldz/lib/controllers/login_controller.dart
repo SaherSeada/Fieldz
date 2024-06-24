@@ -32,6 +32,8 @@ class LoginController extends GetxController {
         });
         SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setString('userID', userData['id']);
+        await prefs.setString('username', userData['username']);
+        await prefs.setString('phoneNumber', userData['phoneNumber']);
         switch (userData['user_type']) {
           case 'user':
             Get.offAll(() => UserLandingPage());

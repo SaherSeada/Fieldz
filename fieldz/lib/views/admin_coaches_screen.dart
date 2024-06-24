@@ -133,7 +133,7 @@ class AdminCoachesListPage extends StatelessWidget {
             title: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 4),
                 child: Text(
-                  coach.name,
+                  coach.username,
                   style: const TextStyle(fontWeight: FontWeight.bold),
                 )),
             subtitle:

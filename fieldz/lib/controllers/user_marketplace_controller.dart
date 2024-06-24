@@ -1,10 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fieldz/models/product.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class UserMarketplaceController extends GetxController {
   final RxList products = [].obs;
   RxBool isLoaded = false.obs;
+
+  final TextEditingController searchController = TextEditingController();
 
   @override
   void onInit() async {

@@ -12,7 +12,7 @@ class AdminCoachDetailsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(controller.coach.name),
+          title: Text(controller.coach.username),
           backgroundColor: Colors.white,
           elevation: 0,
         ),
@@ -62,7 +62,7 @@ class AdminCoachDetailsPage extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: 32),
-                    _buildProfileInfo('Name', controller.coach.name),
+                    _buildProfileInfo('Name', controller.coach.username),
                     _buildProfileInfo('Email', controller.coach.email),
                     _buildProfileInfo('User Name', controller.coach.username),
                     _buildProfileInfo(

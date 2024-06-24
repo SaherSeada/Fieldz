@@ -7,6 +7,7 @@ class SupplierYourFieldsController extends GetxController {
   late String userID;
   final RxList activeFields = [].obs;
   final RxList pendingFields = [].obs;
+  final RxList rejectedFields = [].obs;
 
   RxBool isLoaded = false.obs;
 
@@ -20,6 +21,9 @@ class SupplierYourFieldsController extends GetxController {
 
   getFields() async {
     isLoaded.value = false;
+    activeFields.clear();
+    pendingFields.clear();
+    rejectedFields.clear();
     await FirebaseFirestore.instance
         .collection("fields")
         .where('supplier_id', isEqualTo: userID)
@@ -40,8 +44,10 @@ class SupplierYourFieldsController extends GetxController {
         field.status = data['status'];
         if (field.status == 'verified') {
           activeFields.add(field);
-        } else {
+        } else if (field.status == 'pending') {
           pendingFields.add(field);
+        } else {
+          rejectedFields.add(field);
         }
       }
     });

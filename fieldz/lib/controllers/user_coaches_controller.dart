@@ -1,10 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fieldz/models/coach.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class CoachesController extends GetxController {
   final RxList coaches = [].obs;
   RxBool isLoaded = false.obs;
+
+  final TextEditingController searchController = TextEditingController();
 
   @override
   void onInit() async {
@@ -20,14 +23,14 @@ class CoachesController extends GetxController {
         var data = doc.data();
         var coach = Coach(
             doc.id,
-            data['name'],
             data['email'],
             data['username'],
             data['phoneNumber'],
-            data['price'].toDouble(),
             data['rating'],
             data['avatarURL'],
             data['sport']);
+        coach.availablePlans = data['availablePlans'];
+        coach.availableSessions = data['availableSessions'];
         coaches.add(coach);
       }
     });

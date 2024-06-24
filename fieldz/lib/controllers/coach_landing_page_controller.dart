@@ -6,10 +6,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 class CoachLandingPageController extends GetxController {
   RxString username = "".obs;
   RxString email = "".obs;
+  RxString avatarURL = "".obs;
 
   @override
   void onInit() async {
-    print(DateTime.now());
     await fetchUserDetails();
     super.onInit();
   }
@@ -28,6 +28,7 @@ class CoachLandingPageController extends GetxController {
         if (userSnapshot.exists) {
           username.value = userSnapshot['username'];
           email.value = userSnapshot['email'];
+          avatarURL.value = userSnapshot['avatarURL'];
         }
       } catch (e) {
         messageDialog("Something Went Wrong!", "Please try again.");

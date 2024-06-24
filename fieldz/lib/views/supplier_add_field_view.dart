@@ -68,6 +68,12 @@ class SupplierAddFieldView extends StatelessWidget {
                     // Sport Text Field
                     TextFormField(
                       controller: controller.sportController,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "You have to specify a sport";
+                        }
+                        return null;
+                      },
                       decoration: const InputDecoration(
                         labelText: 'Sport',
                       ),
